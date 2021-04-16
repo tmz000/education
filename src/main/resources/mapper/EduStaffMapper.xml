@@ -35,21 +35,11 @@
 	</select>
 	<update id="updateEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
 		update edu_staff set 
-		<if test="name != '' and name != null">
 			name = #{name},
-		</if> 
-		<if test="status != '' and status != null">
 			status = #{status},
-		</if> 
-		<if test="type != '' and type != null">
 			type = #{type},
-		</if> 
-		<if test="comeDate != '' and comeDate != null">
 			come_date = #{comeDate},
-		</if> 
-		<if test="outDate != '' and outDate != null">
 			out_date = #{outDate},
-		</if>
 		update_time = now() where sys_id = #{sysId}
 	</update>
 	<delete id="deleteEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">

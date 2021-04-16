@@ -92,6 +92,17 @@ $("#clearTable").click(function(){
 	})
 	init();
 })
+$(".rightCss").append('<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>')
+$(".form_datetime").datetimepicker({
+    language: "zh-CN",
+    format: "yyyy-mm-dd",
+    autoclose: true,
+    minView: "month"
+});
+$(".glyphicon-remove").click(function(){
+    $($($(this).parent()).prev()).val("");
+})
+
 
 String.prototype.startWith=function(str){  
     if(str==null||str==""||this.length==0||str.length>this.length)  

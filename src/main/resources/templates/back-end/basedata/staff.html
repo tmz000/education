@@ -15,6 +15,8 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<style>
+</style>
 </head>
 <body>
 <div id="body">
@@ -49,48 +51,32 @@
      	<div style="width:75%;float:left;height:20px;">
      		<input type="hidden" class="form-control" name="sysId" id="sysId"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>员工姓名：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>员工姓名：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control" id="name" placeholder="请输入员工姓名"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>员工类型：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>员工类型：</div>
+     	<div class="rightCss">
      		<select id="type">
      			<option value="0">教职</option>
      			<option value="8">其他</option>
      		</select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>入职日期：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>入职日期：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="comeDate" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
-	        <script type="text/javascript">
-		        $(".form_datetime").datetimepicker({
-		            language: "zh-CN",
-		            format: "yyyy-mm-dd",
-		            autoclose: true,
-		            minView: "month"
-		        });
-	        </script>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>目前状态：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>目前状态：</div>
+     	<div class="rightCss">
      		<select id="status">
      			<option value="0">在职</option>
      			<option value="1">离职</option>
      			<option value="2">请假</option>
      		</select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;">离职日期：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss">离职日期：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="outDate" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
-	        <script type="text/javascript">
-		        $(".form_datetime").datetimepicker({
-		            language: "zh-CN",
-		            format: "yyyy-mm-dd",
-		            autoclose: true,
-		            minView: "month"
-		        });
-	        </script>
      	</div>
       </div>
       <div class="modal-footer">
@@ -277,7 +263,6 @@ $("#saveButton").click(function(){
 	$("#comeDate").val("");
 	$("#status").val("0");
 	$("#outDate").val("");
-	$("#sysId").val(row.sysId);
 	$("#myModalLabel").html("新增");
 })
 

@@ -105,58 +105,50 @@
      	<div style="width:65%;float:left;height:20px;">
      		<input type="hidden" class="form-control" name="sysId" id="sysId"/>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>学生姓名：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>学生姓名：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="stuId"></select>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>班级名称：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>班级名称：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="claId"></select>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>待缴费用：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>待缴费用：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control" id="money" placeholder="请输入待缴费用" autocomplete="off" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\b(0+)/gi,'')"/>
      	</div>
-     	<!-- <div style="width:35%;float:left;text-align:right;">预缴费用：</div>
-     	<div style="width:65%;float:left;">
+     	<!-- <div class="leftCss">预缴费用：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control" id="yuPay" placeholder="请输入预缴费用" autocomplete="off" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\b(0+)/gi,'')" onchange="onChange()"/>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;">后缴费用：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss">后缴费用：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control" id="houPay" placeholder="请输入后缴费用" autocomplete="off" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\b(0+)/gi,'')" onchange="onChange()"/>
      	</div> -->
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>缴费类型：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>缴费类型：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="billType"></select>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>预期缴费时间：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>预期缴费时间：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="payTime" placeholder="请选择预期缴费时间" autocomplete="off" onFocus="this.blur()">
-	        <script type="text/javascript">
-		        $(".form_datetime").datetimepicker({
-		            language: "zh-CN",
-		            format: "yyyy-mm-dd",
-		            autoclose: true,
-		            minView: "month"
-		        });
-	        </script>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;">是否提醒：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss">是否提醒：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="isCall">
      			<option value="0" selected>否</option>
      			<option value="1">是</option>
      		</select>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;"><span style="color:red">*</span>缴费状态：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>缴费状态：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="status">
      			<option value="0" selected>未缴费</option>
      			<option value="1">已缴费</option>
      		</select>
      	</div>
-     	<div style="width:35%;float:left;text-align:right;">费用说明：</div>
-     	<div style="width:65%;float:left;">
+     	<div class="leftCss">费用说明：</div>
+     	<div class="rightCss">
      		<textarea class="form-control" rows="3" id="remark" placeholder="请输入费用说明"></textarea>
      	</div>
       </div>

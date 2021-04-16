@@ -89,40 +89,32 @@
      	<div style="width:75%;float:left;height:20px;">
      		<input type="hidden" class="form-control" name="sysId" id="sysId"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>日期：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>日期：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="addTime" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
-	        <script type="text/javascript">
-		        $(".form_datetime").datetimepicker({
-		            language: "zh-CN",
-		            format: "yyyy-mm-dd",
-		            autoclose: true,
-		            minView: "month"
-		        });
-	        </script>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>姓名：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>姓名：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="teaId"></select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>班级：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>班级：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="claId"></select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>所属：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>所属：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="type"></select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>类型：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>类型：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="pointsTypeId"></select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>积分：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>积分：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control" id="points" placeholder="请输入积分" autocomplete="off" onkeyup="if(value.length==1){value=value.replace(/[^(\-?)\d+]/ig,'')}else{value=value.substring(0,1)+value.substring(1,value.length).replace(/[^\d+]/ig,'');}"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>原因：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>原因：</div>
+     	<div class="rightCss">
      		<textarea rows="2" class="form-control" id="remark" placeholder="请输入积分变动原因"></textarea>
      	</div>
       </div>

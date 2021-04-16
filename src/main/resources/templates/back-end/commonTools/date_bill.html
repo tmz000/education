@@ -74,33 +74,25 @@
      	<div style="width:75%;float:left;height:20px;">
      		<input type="hidden" class="form-control" name="sysId" id="sysId"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>账单日期：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>账单日期：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="billDate" placeholder="请选择账单日期" autocomplete="off" onFocus="this.blur()">
-	        <script type="text/javascript">
-		        $(".form_datetime").datetimepicker({
-		            language: "zh-CN",
-		            format: "yyyy-mm-dd",
-		            autoclose: true,
-		            minView: "month"
-		        });
-	        </script>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>账单类型：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>账单类型：</div>
+     	<div class="rightCss">
      		<select class="form-control" id="billType"></select>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>账单金额：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss"><span style="color:red">*</span>账单金额：</div>
+     	<div class="rightCss">
      		<input type="text" class="form-control"  id="billMoney" placeholder="请输入账单金额" autocomplete="off" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\b(0+)/gi,'')"/>
      	</div>
-     	<div style="width:25%;float:left;text-align:right;">账单说明：</div>
-     	<div style="width:75%;float:left;">
+     	<div class="leftCss">账单说明：</div>
+     	<div class="rightCss">
      		<textarea class="form-control"  id="billRemark" placeholder="请输入账单说明" autocomplete="off"/></textarea>
      	</div>
      	<div id="showStatus" style="display:none">
-	     	<div style="width:25%;float:left;text-align:right;"><span style="color:red">*</span>账单状态：</div>
-	     	<div style="width:75%;float:left;">
+	     	<div class="leftCss"><span style="color:red">*</span>账单状态：</div>
+	     	<div class="rightCss">
 	     		<select class="form-control" id="status">
 	     			<option value="0">支出</option>
 	     			<option value="1">收入</option>
