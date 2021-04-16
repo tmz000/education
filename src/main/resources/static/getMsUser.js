@@ -21,9 +21,9 @@ function getMsUser(){
 $(function(){
 	getMsUser();
 })
-body.onclick=function(){
+/*body.onclick=function(){
 	getMsUser();
-}
+}*/
 $('a').click(function(){
 	if(realName == "" || realName==null){
 		$(this).each(function(){
