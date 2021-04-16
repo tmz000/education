@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.AMenuQxDao">
+	<insert id="saveAMenuQx" parameterType="com.meetsun.meetsun.entity.AMenuQx">
+		insert into a_menu_qx(sys_id,role_id,menu_id,method,create_time,update_time)
+			values(#{sysId},#{roleId},#{menuId},#{method},now(),now())
+	</insert>
+	<select id="getAMenuQxList" parameterType="com.meetsun.meetsun.entity.AMenuQx" resultType="com.meetsun.meetsun.entity.AMenuQx">
+		select * from a_menu_qx where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="roleId != '' and roleId != null">
+			and role_id = #{roleId}
+		</if> 
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getAMenuQxListTotal" parameterType="com.meetsun.meetsun.entity.AMenuQx" resultType="java.lang.Integer">
+		select count(*) from a_menu_qx where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="roleId != '' and roleId != null">
+			and role_id = #{roleId}
+		</if> 
+	</select>
+	<update id="updateAMenuQx" parameterType="com.meetsun.meetsun.entity.AMenuQx">
+		update a_menu_qx set method = #{method},update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteAMenuQx" parameterType="com.meetsun.meetsun.entity.AMenuQx">
+		delete from a_menu_qx where sys_id = #{sysId}
+	</delete>
+</mapper>

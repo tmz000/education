@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.EduStaffDao">
+	<insert id="saveEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
+		insert into edu_staff(sys_id,name,type,come_date,out_date,status,create_time,update_time)
+			values(#{sysId},#{name},#{type},#{comeDate},#{outDate},#{status},now(),now())
+	</insert>
+	<select id="getEduStaffList" parameterType="com.meetsun.meetsun.entity.EduStaff" resultType="com.meetsun.meetsun.entity.EduStaff">
+		select * from edu_staff where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+		order by status asc,create_time desc 
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getEduStaffListTotal" parameterType="com.meetsun.meetsun.entity.EduStaff" resultType="java.lang.Integer">
+		select count(*) from edu_staff where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+	</select>
+	<update id="updateEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
+		update edu_staff set 
+		<if test="name != '' and name != null">
+			name = #{name},
+		</if> 
+		<if test="status != '' and status != null">
+			status = #{status},
+		</if> 
+		<if test="type != '' and type != null">
+			type = #{type},
+		</if> 
+		<if test="comeDate != '' and comeDate != null">
+			come_date = #{comeDate},
+		</if> 
+		<if test="outDate != '' and outDate != null">
+			out_date = #{outDate},
+		</if>
+		update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
+		delete from edu_staff where sys_id = #{sysId}
+	</delete>
+</mapper>

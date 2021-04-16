@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.BePaidBillDao">
+	<insert id="saveBePaidBill" parameterType="com.meetsun.meetsun.entity.BePaidBill">
+		insert into be_paid_bill(sys_id,stu_id,cla_id,money,yu_pay,hou_pay,bill_type,remark,status,pay_time,create_time,update_time)
+			values(#{sysId},#{stuId},#{claId},#{money},#{yuPay},#{houPay},#{billType},#{remark},#{status},#{payTime},now(),now())
+	</insert>
+	<select id="getBePaidBillList" parameterType="com.meetsun.meetsun.entity.BePaidBill" resultType="com.meetsun.meetsun.entity.BePaidBill">
+		select * from be_paid_bill where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="stuId != '' and stuId != null">
+			and stu_id = #{stuId}
+		</if> 
+		<if test="billType != '' and billType != null">
+			and bill_type = #{billType}
+		</if> 
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if> 
+		<if test="payTime != '' and payTime != null">
+			and pay_time &lt;= #{payTime}
+		</if> 
+		order by create_time desc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getBePaidBillListTotal" parameterType="com.meetsun.meetsun.entity.BePaidBill" resultType="java.lang.Integer">
+		select count(*) from be_paid_bill where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="stuId != '' and stuId != null">
+			and stu_id = #{stuId}
+		</if> 
+		<if test="billType != '' and billType != null">
+			and bill_type = #{billType}
+		</if> 
+		<if test="payTime != '' and payTime != null">
+			and pay_time &lt;= #{payTime}
+		</if> 
+	</select>
+	<select id="getBePaidBillListSum" parameterType="com.meetsun.meetsun.entity.BePaidBill" resultType="java.lang.String">
+		select round(sum(money),2) from be_paid_bill where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="status != '' and status != null">
+			and status = #{status}
+		</if> 
+		<if test="payTime != '' and payTime != null">
+			and pay_time &lt;= #{payTime}
+		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="stuId != '' and stuId != null">
+			and stu_id = #{stuId}
+		</if> 
+		<if test="billType != '' and billType != null">
+			and bill_type = #{billType}
+		</if> 
+	</select>
+	<update id="updateBePaidBill" parameterType="com.meetsun.meetsun.entity.BePaidBill">
+		update be_paid_bill set
+		<if test="status != '' and status != null">
+			status = #{status},
+		</if> 
+		<if test="stuId != '' and stuId != null">
+			stu_id = #{stuId},
+		</if> 
+		<if test="claId != '' and claId != null">
+			cla_id = #{claId},
+		</if> 
+		<if test="money != '' and money != null">
+			money = #{money},
+		</if> 
+		<if test="houPay != '' and houPay != null">
+			hou_pay = #{houPay},
+		</if> 
+		<if test="yuPay != '' and yuPay != null">
+			yu_pay = #{yuPay},
+		</if> 
+		<if test="billType != '' and billType != null">
+			bill_type = #{billType},
+		</if> 
+		<if test="remark != '' and remark != null">
+			remark = #{remark},
+		</if> 
+		<if test="payTime != '' and payTime != null">
+			pay_time = #{payTime},
+		</if> 
+		<if test="isCall != '' and isCall != null">
+			is_call = #{isCall},
+		</if> 
+		update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteBePaidBill" parameterType="com.meetsun.meetsun.entity.BePaidBill">
+		delete from be_paid_bill where sys_id = #{sysId}
+	</delete>
+</mapper>

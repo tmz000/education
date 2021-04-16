@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.EduPointsDao">
+	<insert id="saveEduPoints" parameterType="com.meetsun.meetsun.entity.EduPoints">
+		insert into edu_points(sys_id,tea_id,cla_id,points,type,points_type_id,remark,add_time,create_time,update_time)
+			values(#{sysId},#{teaId},#{claId},#{points},#{type},#{pointsTypeId},#{remark},#{addTime},now(),now())
+	</insert>
+	<select id="getEduPointsList" parameterType="com.meetsun.meetsun.entity.EduPoints" resultType="com.meetsun.meetsun.entity.EduPoints">
+		select * from edu_points where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="teaId != '' and teaId != null">
+			and tea_id = #{teaId}
+		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+		<if test="pointsTypeId != '' and pointsTypeId != null">
+			and points_type_id = #{pointsTypeId}
+		</if> 
+		<if test="addTime != '' and addTime != null">
+			<if test="andTime != '' and andTime != null">
+				<if test="addTime >= andTime">
+					and add_time between #{andTime} and #{addTime}
+				</if>
+				<if test="andTime > addTime">
+					and add_time between #{addTime} and #{andTime}
+				</if>
+			</if>
+			<if test="andTime == '' or andTime == null">
+				and add_time = #{addTime}
+			</if>
+		</if>
+		order by create_time desc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getEduPointsListTotal" parameterType="com.meetsun.meetsun.entity.EduPoints" resultType="java.lang.Integer">
+		select count(*) from edu_points where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="teaId != '' and teaId != null">
+			and tea_id = #{teaId}
+		</if>
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+		<if test="pointsTypeId != '' and pointsTypeId != null">
+			and points_type_id = #{pointsTypeId}
+		</if> 
+		<if test="addTime != '' and addTime != null">
+			<if test="andTime != '' and andTime != null">
+				<if test="addTime >= andTime">
+					and add_time between #{andTime} and #{addTime}
+				</if>
+				<if test="andTime > addTime">
+					and add_time between #{addTime} and #{andTime}
+				</if>
+			</if>
+			<if test="andTime == '' or andTime == null">
+				and add_time = #{addTime}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 周期积分查询开始 -->
+	<select id="getEduPointsListByDate" parameterType="com.meetsun.meetsun.entity.EduPoints" resultType="com.meetsun.meetsun.entity.EduPoints">
+		select sum(points) as points,tea_id from edu_points
+		 where 1=1 
+		 <if test="addTime != '' and addTime != null">
+			<if test="andTime != '' and andTime != null">
+				<if test="addTime >= andTime">
+					and add_time between #{andTime} and #{addTime}
+				</if>
+				<if test="andTime > addTime">
+					and add_time between #{addTime} and #{andTime}
+				</if>
+			</if>
+			<if test="andTime == '' or andTime == null">
+				and add_time = #{addTime}
+			</if>
+		</if>
+		<if test="teaId != '' and teaId != null">
+			and tea_id = #{teaId}
+		</if> 
+		group by tea_id
+	</select>
+	<!-- 周期积分查询结束 -->
+	
+	<update id="updateEduPoints" parameterType="com.meetsun.meetsun.entity.EduPoints">
+		update edu_points set 
+		<if test="teaId != '' and teaId != null">
+			tea_id = #{teaId},
+		</if> 
+		<if test="claId != '' and claId != null">
+			cla_id = #{claId},
+		</if> 
+		<if test="points != '' and points != null">
+			points = #{points},
+		</if> 
+		<if test="remark != '' and remark != null">
+			remark = #{remark},
+		</if> 
+		<if test="addTime != '' and addTime != null">
+			add_time = #{addTime},
+		</if> 
+		<if test="pointsTypeId != '' and pointsTypeId != null">
+			points_type_id = #{pointsTypeId},
+		</if> 
+		<if test="type != '' and type != null">
+			type = #{type},
+		</if> 
+		update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteEduPoints" parameterType="com.meetsun.meetsun.entity.EduPoints">
+		delete from edu_points where sys_id = #{sysId}
+	</delete>
+</mapper>

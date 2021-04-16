@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.DateBillTypeDao">
+	<insert id="saveDateBillType" parameterType="com.meetsun.meetsun.entity.DateBillType">
+		insert into date_bill_type(sys_id,type,create_time,update_time)
+			values(#{sysId},#{type},now(),now())
+	</insert>
+	<select id="getDateBillTypeList" parameterType="com.meetsun.meetsun.entity.DateBillType" resultType="com.meetsun.meetsun.entity.DateBillType">
+		select * from date_bill_type where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+		order by create_time desc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getDateBillTypeListTotal" parameterType="com.meetsun.meetsun.entity.DateBillType" resultType="java.lang.Integer">
+		select count(*) from date_bill_type where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="type != '' and type != null">
+			and type = #{type}
+		</if> 
+	</select>
+	<update id="updateDateBillType" parameterType="com.meetsun.meetsun.entity.DateBillType">
+		update date_bill_type set type = #{type},update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteDateBillType" parameterType="com.meetsun.meetsun.entity.DateBillType">
+		delete from date_bill_type where sys_id = #{sysId}
+	</delete>
+</mapper>
