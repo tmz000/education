@@ -233,9 +233,15 @@ function checkNewOrder(){
 			if(res.status == '01'){
 				if(res.rows.length > 0){
 					for(var i=0;i<res.rows.length;i++){
-						$.messager.lays(300, 200);
-						$.messager.show('消息提示', '有待缴费账单提醒<br/>金额为:【'+res.rows[i].money+'元】<br/>请确认是否已收费', 0);
-						speckText('今日有待缴费账单金额为'+res.rows[i].money+'元，请确认是否已收缴到账')
+						(function(i) {
+							//10秒执行一次
+					        setTimeout(function() {
+						        console.log(i);
+								$.messager.lays(300, 200);
+								$.messager.show('消息提示', '有待缴费账单提醒<br/>金额为:【'+res.rows[i].money+'元】<br/>请确认是否已收费', 0);
+								speckText('今日有待缴费账单金额为'+res.rows[i].money+'元，请确认是否已收缴到账')
+					        }, (i + 1) * 10000);
+					    })(i)
 					}
 				}
 			}else{
