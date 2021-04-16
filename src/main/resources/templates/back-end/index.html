@@ -237,7 +237,7 @@ function checkNewOrder(){
 							//15秒循环执行一次
 					        setTimeout(function() {
 								$.messager.lays(300, 200);
-								$.messager.show('消息提示', '有待缴费账单提醒<br/>'+res.rows[i].stuName+res.rows[i].type+'金额为:【'+res.rows[i].money+'元】<br/>请确认是否已收费', 15000);
+								$.messager.show('消息提示', '有待缴费账单提醒<br/>'+res.rows[i].stuName+'【'+res.rows[i].type+'】金额为:【'+res.rows[i].money+'元】<br/>请确认是否已收费', 14000);
 								speckText('今日有'+res.rows[i].stuName+'待缴费'+res.rows[i].type+'费用'+res.rows[i].money+'元，请确认是否已收缴到账')
 					        }, (i + 1) * 15000);
 					    })(i)
