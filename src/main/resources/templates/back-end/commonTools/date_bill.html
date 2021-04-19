@@ -17,6 +17,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="echarts/echarts.min.js"></script>
+<script src="js/tableExport.min.js"></script>
 </head>
 <body>
 <div id="body">
@@ -33,7 +34,37 @@
 				<li role="presentation" class="active" data-id="tabContent1"><a href="#">支出</a></li>
 				<li role="presentation" data-id="tabContent2"><a href="#">收入</a></li>
 			</ul>
-       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="float:right">新增</button>
+			<div style="width:98.5%;height:40px;">
+            	<div style="width:50%;float:left;">&nbsp;
+            	</div>
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+			       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="">新增</button>
+	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+            		</div>
+            	</div>
+            </div>
+			<div id="toolbar" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;margin-top:5px;">
+		     		账单类型：
+          		</div>
+          		<div style="float:left;">
+		     		<select id="billType1"><option value="" disabled selected hidden>请选择账单类型</option></select>&nbsp;&nbsp;&nbsp;
+          		</div>
+          		<div style="float:left;margin-top:5px;">
+		     		账单日期：
+          		</div>
+          		<div style="float:left;">
+		     		<input type="text" class="form-control form_datetime" id="billDate1" placeholder="请选择账单日期" autocomplete="off" onFocus="this.blur()">
+          		</div>
+		        <div style="float:left;">
+		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+		        </div>
+		        <div style="float:left;">
+		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+		        </div>
+		        <div style="clear:both;"></div>
+            </div>
           	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
           </div>
           <div style="background-color:#D4F2E7;height:50px;text-align:right;line-height:60px;">
@@ -109,8 +140,9 @@
 </div>
 <input type="hidden" id="billStatus">
 <script type="text/javascript">
-$("#myModal").hide();
+var queryS = 0;
 $(function(){
+	$("#myModal").hide();
 	$.ajax({
 		type:"post",
 		url:"/dateBillType/getDateBillTypeList?token="+localStorage.getItem("token"),
@@ -120,6 +152,7 @@ $(function(){
 			if(res.status=="01"){
 				for(var i=0;i<res.rows.length;i++){
 					$("#billType").append("<option>"+res.rows[i].type+"</option>")
+					$("#billType1").append("<option>"+res.rows[i].type+"</option>")
 				}					
 			}else{
 				alert("暂无权限")
@@ -138,17 +171,20 @@ $('.nav-tabs li').click(function(){
 　　switch(_id){
 　　　　case "tabContent1":
 　　　　　　getTabContent("0");
+		queryS = 0;
 		$("#billStatus").val("0")
 		showDateByYear($("#chooseType").val())
 　　　　　　break;
 　　　　case "tabContent2":
 　　　　　　getTabContent("1");
+		queryS = 1;
 		$("#billStatus").val("1")
 		showDateByYear($("#chooseType").val())
 　　　　　　break;
 　　　　default:
 　　　　　　getTabContent("0");
 		$("#billStatus").val("0")
+		queryS = 0;
 		showDateByYear($("#chooseType").val())
 　　　　　　break;
 　　}
@@ -159,13 +195,14 @@ function getTabContent(status){
 	$('#table').bootstrapTable({
 	    url: "/dateBill/getDateBillList?token="+localStorage.getItem("token"),
 	    pagination: true,
-	    search:true,
 	    method:"post",
 	    height:"350",
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
 	            offset :params.offset + 0,// SQL语句起始索引
-	            pageNumber : params.limit  // 每页显示数量
+	            pageNumber : params.limit,  // 每页显示数量
+	            billDate:$("#billDate1").val(),
+	            billType:$("#billType1").val()
 	        };
 	        return temp;
 	    },
@@ -251,6 +288,18 @@ function getTabContent(status){
 	    }]
 	});
 }
+$("#queryTable").click(function(){
+	getTabContent(queryS)
+})
+$("#clearTable").click(function(){
+	$("#toolbar input").each(function(){
+		 $(this).val('');
+	})
+	$("#toolbar select").each(function(){
+		 $(this).val('');
+	})
+	getTabContent(queryS)
+})
 function submit(){
 	if($("#billDate").val() == ""){
 		alert("账单日期不能为空！");
@@ -587,6 +636,17 @@ function showDateByType(year){
 			}
 		}
 	})
+}
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,6],//忽略某一列的索引
+        fileName: '待缴费统计',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
 }
 </script>
 <script src="getMsUser.js"></script>

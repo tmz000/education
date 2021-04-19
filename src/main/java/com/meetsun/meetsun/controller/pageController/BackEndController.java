@@ -116,6 +116,11 @@ public class BackEndController{
 	public String classes() { 
 		return "back-end/basedata/classes"; 
 	}
+	//班级页面
+	@RequestMapping({"/classesDetail"})
+	public String classesDetail() { 
+		return "back-end/basedata/classes-detail"; 
+	}
 	//学生页面
 	@RequestMapping({"/student"})
 	public String student() { 

@@ -10,6 +10,15 @@
 		<if test="sysId != '' and sysId != null">
 			and sys_id = #{sysId}
 		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if> 
+		<if test="comeDate != '' and comeDate != null">
+			and come_date = #{comeDate}
+		</if> 
+		<if test="name != '' and name != null">
+			and cname like CONCAT('%', #{name}, '%')
+		</if> 
 		order by status asc,create_time desc
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
@@ -19,6 +28,15 @@
 		select count(*) from edu_student where 1=1
 		<if test="sysId != '' and sysId != null">
 			and sys_id = #{sysId}
+		</if> 
+		<if test="claId != '' and claId != null">
+			and cla_id = #{claId}
+		</if>
+		<if test="comeDate != '' and comeDate != null">
+			and come_date = #{comeDate}
+		</if> 
+		<if test="name != '' and name != null">
+			and cname like CONCAT('%', #{name}, '%')
 		</if> 
 	</select>
 	<update id="updateEduStudent" parameterType="com.meetsun.meetsun.entity.EduStudent">

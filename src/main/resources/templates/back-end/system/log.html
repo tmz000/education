@@ -26,10 +26,10 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
-          	<ul class="nav nav-tabs" role="tablist">
+          	<!-- <ul class="nav nav-tabs" role="tablist">
 				<li role="presentation" class="active" data-id="tabContent1"><a href="#">后台</a></li>
-				<!-- <li role="presentation" data-id="tabContent2"><a href="#">前台</a></li> -->
-			</ul>
+				<li role="presentation" data-id="tabContent2"><a href="#">前台</a></li>
+			</ul> -->
           	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
           </div>
         </div>
@@ -40,9 +40,10 @@
 </div>
 <script type="text/javascript">
 $(function(){
-	getTabContent("0");
+	//getTabContent("0");
+	init()
 })
-$('.nav-tabs li').click(function(){
+/* $('.nav-tabs li').click(function(){
 　　$(this).addClass('active').siblings().removeClass('active');
 　　var _id = $(this).attr('data-id');
 　　$('.tabs-contents').find('#'+_id).addClass('active').siblings().removeClass('active');
@@ -58,19 +59,17 @@ $('.nav-tabs li').click(function(){
 　　　　　　getTabContent("0");
 　　　　　　break;
 　　}
-});
+}); */
 var dialog=null
-function getTabContent(flag){
-	$('#table').bootstrapTable('destroy');
-	$('#table').bootstrapTable({
+function init(){
+	$('#table').bootstrapTable('destroy').bootstrapTable({
 	    url: '/logInfo/getLogInfoList',
 	    pagination: true,
-	    search:true,
 	    method:"post",
 	    height:"400",
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
-	    		type:flag,
+	    		type:"0",
 	            offset :params.offset + 0,// SQL语句起始索引
 	            pageNumber : params.limit  // 每页显示数量
 	        };

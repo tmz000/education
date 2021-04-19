@@ -22,6 +22,9 @@
 		<if test="status != '' and status != null">
 			and status = #{status}
 		</if> 
+		<if test="isCall != '' and isCall != null">
+			and is_call = #{isCall}
+		</if> 
 		<if test="payTime != '' and payTime != null">
 			and pay_time &lt;= #{payTime}
 		</if> 

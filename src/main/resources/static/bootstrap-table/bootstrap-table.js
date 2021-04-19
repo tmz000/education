@@ -3168,7 +3168,7 @@
 	  totalNotFiltered: 0,
 	  pageNumber: 1,
 	  pageSize: 10,
-	  pageList: [10, 25, 50, 100],
+	  pageList: [10, 25, 50, 100 ,200 ,400, 800, 1000, 2000, 4000],
 	  paginationHAlign: 'right',
 	  // right, left
 	  paginationVAlign: 'bottom',

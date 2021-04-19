@@ -11,4 +11,5 @@ public class EduClasses {
 	
 	private Integer offset;
 	private Integer pageNumber;
+	private Integer count;
 }

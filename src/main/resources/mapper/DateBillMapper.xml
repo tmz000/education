@@ -19,6 +19,9 @@
 		<if test="userId != '' and userId != null">
 			and user_id = #{userId}
 		</if> 
+		<if test="billDate != '' and billDate != null">
+			and bill_date = #{billDate}
+		</if> 
 		order by bill_date desc
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
@@ -37,6 +40,9 @@
 		</if> 
 		<if test="userId != '' and userId != null">
 			and user_id = #{userId}
+		</if>
+		<if test="billDate != '' and billDate != null">
+			and bill_date = #{billDate}
 		</if> 
 	</select>
 	<select id="getDateBillListByType" parameterType="com.meetsun.meetsun.entity.DateBill" resultType="com.meetsun.meetsun.entity.DateBill">

@@ -16,6 +16,12 @@
 		<if test="type != '' and type != null">
 			and type = #{type}
 		</if> 
+		<if test="comeDate != '' and comeDate != null">
+			and come_date = #{comeDate}
+		</if> 
+		<if test="name != '' and name != null">
+			and name like CONCAT('%', #{name}, '%')
+		</if> 
 		order by status asc,create_time desc 
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
@@ -32,6 +38,12 @@
 		<if test="type != '' and type != null">
 			and type = #{type}
 		</if> 
+		<if test="comeDate != '' and comeDate != null">
+			and come_date = #{comeDate}
+		</if>
+		<if test="name != '' and name != null">
+			and name like CONCAT('%', #{name}, '%')
+		</if>
 	</select>
 	<update id="updateEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
 		update edu_staff set 

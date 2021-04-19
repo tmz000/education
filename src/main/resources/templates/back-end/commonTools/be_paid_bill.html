@@ -236,6 +236,7 @@ $(function(){
 	getTabContent("0");
 })
 var dialog=null
+function init(){};
 function getTabContent(status){
 	$('#table').bootstrapTable('destroy');
 	$('#table').bootstrapTable({
@@ -398,7 +399,11 @@ function getTabContent(status){
 	    	}
 	    }],
 	    onLoadSuccess:function(data){
-	    	$("#tableSum").html(data.rows[0].sum)
+	    	if(data.rows.length > 0){
+		    	$("#tableSum").html(data.rows[0].sum)
+	    	}else{
+		    	$("#tableSum").html("0")
+	    	}
 	    }
 	});
 }
