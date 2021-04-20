@@ -8,34 +8,30 @@ import org.springframework.stereotype.Service;
 import com.meetsun.meetsun.dao.EduDeptDao;
 import com.meetsun.meetsun.dao.EduStaffDao;
 import com.meetsun.meetsun.entity.EduDept;
-import com.meetsun.meetsun.entity.EduStaff;
-import com.meetsun.meetsun.service.EduStaffService;
+import com.meetsun.meetsun.service.EduDeptService;
 import com.meetsun.meetsun.until.Result;
 import com.meetsun.meetsun.until.Tools;
 import com.meetsun.meetsun.vo.EduDeptVo;
 import com.meetsun.meetsun.vo.EduStaffVo;
 
 @Service
-public class EduStaffServiceImpl implements EduStaffService{
+public class EduDeptServiceImpl implements EduDeptService{
 	
-	@Autowired
-	private EduStaffDao eduStaffDao;
 	@Autowired
 	private EduDeptDao eduDeptDao;
+	@Autowired
+	private EduStaffDao eduStaffDao;
 	
 	@Override
-	public Result<Object> getEduStaffList(EduStaffVo vo) {
+	public Result<Object> getEduDeptList(EduDeptVo vo) {
 		Result result = new Result();
-		List<EduStaff> list = eduStaffDao.getEduStaffList(vo);
-		for(EduStaff ef:list) {
-			EduDeptVo ev = new EduDeptVo();
-			ev.setSysId(ef.getDeptId());
-			List<EduDept> li = eduDeptDao.getEduDeptList(ev);
-			if(li.size() > 0) {
-				ef.setDeptName(li.get(0).getName());
-			}
-		}
-		int total = eduStaffDao.getEduStaffListTotal(vo);
+		List<EduDept> list = eduDeptDao.getEduDeptList(vo);
+		for(EduDept et : list) {
+			EduStaffVo es = new EduStaffVo();
+			es.setDeptId(et.getSysId());
+			et.setCount(eduStaffDao.getEduStaffList(es).size());
+ 		}
+		int total = eduDeptDao.getEduDeptListTotal(vo);
 		result.setStatus("01");
 		result.setRows(list);
 		result.setTotal(total);
@@ -43,9 +39,9 @@ public class EduStaffServiceImpl implements EduStaffService{
 	}
 
 	@Override
-	public Result<Object> saveEduStaff(EduStaffVo vo) {
+	public Result<Object> saveEduDept(EduDeptVo vo) {
 		vo.setSysId(Tools.getUUID());
-		int flag = eduStaffDao.saveEduStaff(vo);
+		int flag = eduDeptDao.saveEduDept(vo);
 		if (flag > 0) {
 			return Result.success("success");
 		}
@@ -53,8 +49,8 @@ public class EduStaffServiceImpl implements EduStaffService{
 	}
 
 	@Override
-	public Result<Object> updateEduStaff(EduStaffVo vo) {
-		int flag = eduStaffDao.updateEduStaff(vo);
+	public Result<Object> updateEduDept(EduDeptVo vo) {
+		int flag = eduDeptDao.updateEduDept(vo);
      	if (flag > 0) {
      		return Result.success("success");
      	}
@@ -62,8 +58,8 @@ public class EduStaffServiceImpl implements EduStaffService{
 	}
 
 	@Override
-	public Result<Object> deleteEduStaff(EduStaffVo vo) {
-		int flag = eduStaffDao.deleteEduStaff(vo);
+	public Result<Object> deleteEduDept(EduDeptVo vo) {
+		int flag = eduDeptDao.deleteEduDept(vo);
 		if (flag > 0) {
 			return Result.success("success");
 		}

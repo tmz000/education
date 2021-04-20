@@ -20,24 +20,24 @@
 <div id="body">
 <div id="content">
   <div id="content-header">
-      <h1>KPI总览</h1>
+      <h1>KPI生成</h1>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
-          	<!-- <div style="width:98.5%;height:30px;">
+          	<div style="width:98.5%;height:30px;">
             	<div style="width:50%;float:left;">
 		       		<button class="btn btn-info" id="saveButton" style="">导出</button>
             	</div>
-            </div> -->
+            </div>
           	<div id="toolbar" style="width:100%;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		员工姓名：
           		</div>
           		<div style="float:left;">
-		     		<select id="staffId1"><option value="" disabled selected hidden>请选择姓名</option></select>&nbsp;&nbsp;&nbsp;
+		     		<select id="teaId1"><option value="" disabled selected hidden>请选择姓名</option></select>&nbsp;&nbsp;&nbsp;
           		</div>
 		        <div style="float:left;">
 		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
@@ -47,7 +47,9 @@
 		        </div>
 		        <div style="clear:both;"></div>
             </div>
-            <table id="table" style="white-space:nowrap;overflow: hidden"></table>
+            <div  style="width:100;border:1px solid #CDCDB4;padding-top:10px;">
+            	asdsad
+            </div>
           </div>
         </div>
       </div>
@@ -66,7 +68,8 @@ $(function(){
 		success:function(res){
 			if(res.status=="01"){
 				for(var i=0;i<res.rows.length;i++){
-					$("#staffId1").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
+					$("#teaId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
+					$("#teaId1").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
 				}
 			}else{
 				alert("暂无权限")
@@ -79,14 +82,17 @@ var dialog=null
 function init(){
 	$('#table').bootstrapTable('destroy');
 	$('#table').bootstrapTable({
-	    url: "/kpiNotes/getKpiNotesList?token="+localStorage.getItem("token"),
+	    url: "/eduPoints/getEduPointsList?token="+localStorage.getItem("token"),
 	    pagination: true,
 	    toolbar:'#toolbar',
 	    method:"post",
 	    height:"400",
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
-	    		staffId:$("#staffId1").val(),
+	    		teaId:$("#teaId1").val(),
+	    		type:$("#queryType").val(),
+	    		claId:$("#claId1").val(),
+	    		addTime:$("#addTime1").val(),
 	            offset :params.offset + 0,// SQL语句起始索引
 	            pageNumber : params.limit  // 每页显示数量
 	        };
@@ -105,15 +111,23 @@ function init(){
 	        title: '主键',
 	        visible: false
 	    },{
-	        field: 'staffName',
+	        field: 'teaName',
 	        align:'center',
 	        title: '姓名',
 	    },{
-	        field: 'deptName',
+	        field: 'claName',
 	        align:'center',
-	        title: '部门',
+	        title: '班级',
 	    },{
-	        field: 'countPoints',
+	        field: 'type',
+	        align:'center',
+	        title: '所属',
+	    },{
+	        field: 'pointsMake',
+	        align:'center',
+	        title: '类型',
+	    },{
+	        field: 'points',
 	        align:'center',
 	        title: '积分',
 	        formatter:function(value, row, index) {
@@ -126,13 +140,19 @@ function init(){
 	        	}
 	   	    }
 	    },{
-	        field: 'kpiStartDate',
+	        field: 'remark',
 	        align:'center',
-	        title: '考核开始时间',
+	        title: '原因',
+	        formatter:paramsMatter,
+	        cellStyle:formatTableUnit,
 	    },{
-	        field: 'kpiEndDate',
+	        field: 'addTime',
 	        align:'center',
-	        title: '考核结束时间',
+	        title: '日期',
+	   	},{
+	        field: 'createTime',
+	        align:'center',
+	        title: '记录时间',
 	    },{
 	    	field:'operate',
 	    	align:'center',
@@ -155,7 +175,7 @@ function init(){
 	   				if(confirm("确定要执行该操作？")){
 	   					$.ajax({
 	   						type:"post",
-	   						url:"/kpiNotes/deleteEduPoints?token="+localStorage.getItem("token"),
+	   						url:"/eduPoints/deleteEduPoints?token="+localStorage.getItem("token"),
 	   						data:JSON.stringify({"sysId":row.sysId}),
 	   						contentType:'application/json',
 	   						success:function(res){
@@ -202,7 +222,7 @@ function submit(){
 		if(dialog==0){
 			$.ajax({
 				type:"post",
-				url:"/kpiNotes/updateEduPoints?token="+localStorage.getItem("token"),
+				url:"/eduPoints/updateEduPoints?token="+localStorage.getItem("token"),
 				contentType:'application/json',
 				data:data,
 				success:function(res){
@@ -218,7 +238,7 @@ function submit(){
 		}else{
 			$.ajax({
 				type:"post",
-				url:"/kpiNotes/saveEduPoints?token="+localStorage.getItem("token"),
+				url:"/eduPoints/saveEduPoints?token="+localStorage.getItem("token"),
 				contentType:'application/json',
 				data:data,
 				success:function(res){

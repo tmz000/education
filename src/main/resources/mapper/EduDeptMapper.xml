@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.EduDeptDao">
+	<insert id="saveEduDept" parameterType="com.meetsun.meetsun.entity.EduDept">
+		insert into edu_dept(sys_id,name,create_time,update_time)
+			values(#{sysId},#{name},now(),now())
+	</insert>
+	<select id="getEduDeptList" parameterType="com.meetsun.meetsun.entity.EduDept" resultType="com.meetsun.meetsun.entity.EduDept">
+		select * from edu_dept where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="name != '' and name != null">
+			and name like CONCAT('%', #{name}, '%')
+		</if> 
+		order by create_time asc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getEduDeptListTotal" parameterType="com.meetsun.meetsun.entity.EduDept" resultType="java.lang.Integer">
+		select count(*) from edu_dept where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if>
+		<if test="name != '' and name != null">
+			and name like CONCAT('%', #{name}, '%')
+		</if> 
+	</select>
+	<update id="updateEduDept" parameterType="com.meetsun.meetsun.entity.EduDept">
+		update edu_dept set 
+		<if test="name != '' and name != null">
+			name = #{name},
+		</if> 
+		update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteEduDept" parameterType="com.meetsun.meetsun.entity.EduDept">
+		delete from edu_dept where sys_id = #{sysId}
+	</delete>
+</mapper>

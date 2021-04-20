@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meetsun.meetsun.dao.KpiNotesDao">
+	<insert id="saveKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
+		insert into kpi_notes(sys_id,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,kpi_start_date,kpi_end_date,count_points，create_time,update_time)
+			values(#{sysId},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{kpiStartDate},#{kpiEndDate},#{countPoints},now(),now())
+	</insert>
+	<select id="getKpiNotesList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
+		select * from kpi_notes where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="staffId != '' and staffId != null">
+			and staff_id = #{staffId}
+		</if> 
+		order by create_time desc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
+	<select id="getKpiNotesListTotal" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="java.lang.Integer">
+		select count(*) from kpi_notes where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="staffId != '' and staffId != null">
+			and staff_id = #{staffId}
+		</if> 
+	</select>
+	<update id="updateKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
+		update kpi_notes set update_time = now() where sys_id = #{sysId}
+	</update>
+	<delete id="deleteKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
+		delete from kpi_notes where sys_id = #{sysId}
+	</delete>
+</mapper>

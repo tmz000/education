@@ -106,7 +106,12 @@ public class BackEndController{
 	public String pointsCount() { 
 		return "back-end/points/points-count"; 
 	}
-	//积分总览页面
+	//KPI生成页面
+	@RequestMapping({"/pointsKpi"})
+	public String pointsKpi() { 
+		return "back-end/points/points-kpi"; 
+	}
+	//KPI总览页面
 	@RequestMapping({"/pointsType"})
 	public String pointsType() { 
 		return "back-end/points/points-type"; 

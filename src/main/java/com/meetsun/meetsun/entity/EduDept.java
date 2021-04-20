@@ -3,18 +3,13 @@ package com.meetsun.meetsun.entity;
 import lombok.Data;
 
 @Data
-public class EduStudent {
+public class EduDept {
 	private String sysId;
 	private String name;
-	private String courseId;
-	private String status;
-	private String claId;
-	private String comeDate;
-	private String outDate;
 	private String createTime;
 	private String updateTime;
 	
-	private String claName;
 	private Integer offset;
 	private Integer pageNumber;
+	private Integer count;
 }

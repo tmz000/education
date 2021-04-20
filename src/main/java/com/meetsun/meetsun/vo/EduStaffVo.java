@@ -6,7 +6,7 @@ import lombok.Data;
 public class EduStaffVo {
 	private String sysId;
 	private String name;
-	private String type;
+	private String deptId;
 	private String status;
 	private String comeDate;
 	private String outDate;

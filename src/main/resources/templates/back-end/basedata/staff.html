@@ -87,10 +87,7 @@
      	</div>
      	<div class="leftCss"><span style="color:red">*</span>员工类型：</div>
      	<div class="rightCss">
-     		<select id="type">
-     			<option value="0">教职</option>
-     			<option value="8">其他</option>
-     		</select>
+     		<select id="deptId"></select>
      	</div>
      	<div class="leftCss"><span style="color:red">*</span>入职日期：</div>
      	<div class="rightCss">
@@ -135,6 +132,21 @@ $(function(){
 			}
 		}
 	})
+	$.ajax({
+		type:"post",
+		url:"/eduDept/getEduDeptList?token="+localStorage.getItem("token"),
+		data:JSON.stringify({}),
+		contentType:'application/json',
+		success:function(res){
+			if(res.status=="01"){
+				for(var i=0;i<res.rows.length;i++){
+					$("#deptId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
+				}
+			}else{
+				alert("暂无权限")
+			}
+		}
+	})
 	$("#myModal").hide()
 })
 var dialog=null
@@ -171,20 +183,9 @@ function init(){
 	        align:'center',
 	        title: '员工姓名',
 	    },{
-	        field: 'type',
+	        field: 'deptName',
 	        align:'center',
-	        title: '员工类型',
-	        formatter: function (value, row, index) {
-	   	        if(row.type == "0"){
-	   	        	return "教职";
-	   	        }else if(row.type == "1"){
-	   	        	return "临时";
-	   	        }else if(row.type == "2"){
-	   	        	return "";
-	   	        }else{
-	   	        	return "其他";
-	   	        }
-	   	    }
+	        title: '员工类型'
 	    },{
 	        field: 'comeDate',
 	        align:'center',
@@ -218,7 +219,7 @@ function init(){
 	   			'click #editTable': function(e, value, row, index) {
 	   				dialog=0
 	   				$("#name").val(row.name);
-	   				$("#type").val(row.type);
+	   				$("#deptId").val(row.deptId);
 	   				$("#comeDate").val(row.comeDate);
 	   				$("#status").val(row.status);
 	   				$("#outDate").val(row.outDate);
@@ -254,7 +255,7 @@ function init(){
 function submit(){
 	if($("#name").val() == ""){
 		alert("员工姓名不能为空！");
-	}else if($("#type").val() == null){
+	}else if($("#deptId").val() == null){
 		alert("员工类型不能为空！");
 	}else if($("#comeDate").val() == ""){
 		alert("入职时间不能为空！");
@@ -262,7 +263,7 @@ function submit(){
 		var data=JSON.stringify({
 			"name":$("#name").val(),
 			"outDate":$("#outDate").val(),
-			"type":$("#type").val(),
+			"deptId":$("#deptId").val(),
 			"comeDate":$("#comeDate").val(),
 			"status":$("#status").val(),
 			"sysId":$("#sysId").val()

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.EduStaffDao">
 	<insert id="saveEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
-		insert into edu_staff(sys_id,name,type,come_date,out_date,status,create_time,update_time)
-			values(#{sysId},#{name},#{type},#{comeDate},#{outDate},#{status},now(),now())
+		insert into edu_staff(sys_id,name,dept_id,come_date,out_date,status,create_time,update_time)
+			values(#{sysId},#{name},#{deptId},#{comeDate},#{outDate},#{status},now(),now())
 	</insert>
 	<select id="getEduStaffList" parameterType="com.meetsun.meetsun.entity.EduStaff" resultType="com.meetsun.meetsun.entity.EduStaff">
 		select * from edu_staff where 1=1
@@ -13,9 +13,9 @@
 		<if test="status != '' and status != null">
 			and status = #{status}
 		</if> 
-		<if test="type != '' and type != null">
-			and type = #{type}
-		</if> 
+		<if test="deptId != '' and deptId != null">
+			and dept_id = #{deptId}
+		</if>
 		<if test="comeDate != '' and comeDate != null">
 			and come_date = #{comeDate}
 		</if> 
@@ -35,8 +35,8 @@
 		<if test="status != '' and status != null">
 			and status = #{status}
 		</if> 
-		<if test="type != '' and type != null">
-			and type = #{type}
+		<if test="deptId != '' and deptId != null">
+			and dept_id = #{deptId}
 		</if> 
 		<if test="comeDate != '' and comeDate != null">
 			and come_date = #{comeDate}
@@ -49,7 +49,7 @@
 		update edu_staff set 
 			name = #{name},
 			status = #{status},
-			type = #{type},
+			dept_id = #{deptId},
 			come_date = #{comeDate},
 			out_date = #{outDate},
 		update_time = now() where sys_id = #{sysId}

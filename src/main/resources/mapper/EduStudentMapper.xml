@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.EduStudentDao">
 	<insert id="saveEduStudent" parameterType="com.meetsun.meetsun.entity.EduStudent">
-		insert into edu_student(sys_id,cla_id,name,status,come_date,out_date,create_time,update_time)
-			values(#{sysId},#{claId},#{name},#{status},#{comeDate},#{outDate},now(),now())
+		insert into edu_student(sys_id,cla_id,name,status,come_date,out_date,course_id,create_time,update_time)
+			values(#{sysId},#{claId},#{name},#{status},#{comeDate},#{outDate},#{courseId},now(),now())
 	</insert>
 	<select id="getEduStudentList" parameterType="com.meetsun.meetsun.entity.EduStudent" resultType="com.meetsun.meetsun.entity.EduStudent">
 		select * from edu_student where 1=1
@@ -15,6 +15,9 @@
 		</if> 
 		<if test="comeDate != '' and comeDate != null">
 			and come_date = #{comeDate}
+		</if> 
+		<if test="courseId != '' and courseId != null">
+			and course_id = #{courseId}
 		</if> 
 		<if test="name != '' and name != null">
 			and cname like CONCAT('%', #{name}, '%')
@@ -35,6 +38,9 @@
 		<if test="comeDate != '' and comeDate != null">
 			and come_date = #{comeDate}
 		</if> 
+		<if test="courseId != '' and courseId != null">
+			and course_id = #{courseId}
+		</if>
 		<if test="name != '' and name != null">
 			and cname like CONCAT('%', #{name}, '%')
 		</if> 

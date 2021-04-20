@@ -21,19 +21,25 @@
 <div id="body">
 <div id="content">
   <div id="content-header">
-      <h1>班级管理</h1>
+      <h1>基础设置</h1>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span12">
         <div class="widget-box">
-          <div class="widget-content">
+        <div class="widget-content">
+          	<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active" data-id="tabContent1"><a href="#">部门管理</a></li>
+				<li role="presentation" data-id="tabContent2"><a href="#">班级管理</a></li>
+				<li role="presentation" data-id="tabContent3"><a href="#">课程管理</a></li>
+			</ul>
+          <div style="display:none;" id="classes">
           	<div style="width:98.5%;height:40px;">
             	<div style="width:50%;float:left;">&nbsp;</div>
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 			       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="">新增</button>
-	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+	            		<!-- <button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button> -->
             		</div>
             	</div>
             </div>
@@ -52,7 +58,62 @@
 		        </div>
             	<div style="clear:both;"></div>
             </div>
-          	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
+          	<table id="table" style="white-space:nowrap;overflow: hidden;"></table>
+          </div>
+          <div style="display:block;" id="dept">
+          	<div style="width:98.5%;height:40px;">
+            	<div style="width:50%;float:left;">&nbsp;</div>
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+			       		<button class="btn btn-info" id="saveButton1" data-toggle="modal" data-target="#myModal1" style="">新增</button>
+	            		<!-- <button class="btn btn-success" onclick="exportData1()" class='btn btn-mini btn-info'>导出</button> -->
+            		</div>
+            	</div>
+            </div>
+          	<div id="toolbar1" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;margin-top:5px;">
+		     		部门：
+          		</div>
+          		<div style="float:left;">
+		     		<input type="text" class="form-control" id="queryName" placeholder="请输入部门名称"/>&nbsp;&nbsp;&nbsp;
+          		</div>
+		        <div style="float:left;">
+		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable1">查询</button>
+		        </div>
+		        <div style="float:left;">
+		        	&nbsp;<button class="btn btn-danger" id="clearTable1">清空</button>
+		        </div>
+            	<div style="clear:both;"></div>
+            </div>
+          	<table id="table1" style="white-space:nowrap;overflow: hidden;"></table>
+          </div>
+          <div style="display:none;" id="course">
+          	<div style="width:98.5%;height:40px;">
+            	<div style="width:50%;float:left;">&nbsp;</div>
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+			       		<button class="btn btn-info" id="saveButton2" data-toggle="modal" data-target="#myModal2" style="">新增</button>
+	            		<!-- <button class="btn btn-success" onclick="exportData1()" class='btn btn-mini btn-info'>导出</button> -->
+            		</div>
+            	</div>
+            </div>
+          	<div id="toolbar2" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;margin-top:5px;">
+		     		课程：
+          		</div>
+          		<div style="float:left;">
+		     		<input type="text" class="form-control" id="queryName2" placeholder="请输入课程名称"/>&nbsp;&nbsp;&nbsp;
+          		</div>
+		        <div style="float:left;">
+		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable2">查询</button>
+		        </div>
+		        <div style="float:left;">
+		        	&nbsp;<button class="btn btn-danger" id="clearTable2">清空</button>
+		        </div>
+            	<div style="clear:both;"></div>
+            </div>
+          	<table id="table2" style="white-space:nowrap;overflow: hidden;"></table>
+          </div>
           </div>
         </div>
       </div>
@@ -65,13 +126,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">积分</h4>
+        <h4 class="modal-title" id="myModalLabel">班级</h4>
       </div>
       <!-- <div class="modal-body" > -->
       <div>
      	<div style="width:25%;float:left;text-align:right;height:20px;"></div>
      	<div style="width:75%;float:left;height:20px;">
-     		<input type="hidden" class="form-control" name="sysId" id="sysId"/>
+     		<input type="hidden" class="form-control" id="sysId"/>
      	</div>
      	<div class="leftCss"><span style="color:red">*</span>班级名称：</div>
      	<div class="rightCss">
@@ -84,16 +145,120 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel1">部门</h4>
+      </div>
+      <!-- <div class="modal-body" > -->
+      <div>
+     	<div style="width:25%;float:left;text-align:right;height:20px;"></div>
+     	<div style="width:75%;float:left;height:20px;">
+     		<input type="hidden" class="form-control" id="sysId1"/>
+     	</div>
+     	<div class="leftCss"><span style="color:red">*</span>部门名称：</div>
+     	<div class="rightCss">
+     		<input type="text" class="form-control" id="name1" placeholder="请输入部门名称"/>
+     	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submit1()">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel2">部门</h4>
+      </div>
+      <!-- <div class="modal-body" > -->
+      <div>
+     	<div style="width:25%;float:left;text-align:right;height:20px;"></div>
+     	<div style="width:75%;float:left;height:20px;">
+     		<input type="hidden" class="form-control" id="sysId2"/>
+     	</div>
+     	<div class="leftCss"><span style="color:red">*</span>部门名称：</div>
+     	<div class="rightCss">
+     		<input type="text" class="form-control" id="name2" placeholder="请输入部门名称"/>
+     	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submit2()">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 <script type="text/javascript">
-$(function(){
-	init();
-	$("#myModal").hide()
+$("#queryTable1").click(function(){
+	init1();
 })
+$("#clearTable1").click(function(){
+	$("#toolbar1 input").each(function(){
+		 $(this).val('');
+	})
+	$("#toolbar1 select").each(function(){
+		 $(this).val('');
+	})
+	init1();
+})
+$("#queryTable2").click(function(){
+	init2();
+})
+$("#clearTable2").click(function(){
+	$("#toolbar2 input").each(function(){
+		 $(this).val('');
+	})
+	$("#toolbar2 select").each(function(){
+		 $(this).val('');
+	})
+	init2();
+})
+function showHide(a,b,c){
+	$("#"+a).show();
+	$("#"+b).hide();
+	$("#"+c).hide();
+}
+$(function(){
+	init1();
+	$("#myModal").hide()
+	$("#myModal1").hide()
+	$("#myModal2").hide()
+	$('.nav-tabs li').click(function(){
+	　　$(this).addClass('active').siblings().removeClass('active');
+	　　var _id = $(this).attr('data-id');
+	　　$('.tabs-contents').find('#'+_id).addClass('active').siblings().removeClass('active');
+
+	　　switch(_id){
+	　　　　case "tabContent1":
+			showHide("dept","classes","course")
+			init1()
+			break;
+		　case "tabContent2":
+			showHide("classes","dept","course")
+			init()
+			break;
+		　case "tabContent3":
+			showHide("course","dept","classes")
+			init2()
+			break;
+		　default:
+			showHide("dept","classes","course")
+			init1()
+			break;
+		}
+	});
+	
+})
+//-------------------------------------------------------------班级begin
 var dialog=null
 function init(){
-	$('#table').bootstrapTable('destroy')
-	$('#table').bootstrapTable({
+	$('#table').bootstrapTable('destroy').bootstrapTable({
 	    url: "/eduClasses/getEduClassesList?token="+localStorage.getItem("token"),
 	    pagination: true,
 	    method:"post",
@@ -141,30 +306,30 @@ function init(){
 	    	events: window.operateEvents = {
 	   			'click #editTable': function(e, value, row, index) {
 	   				dialog=0
-	   				$("#teaName").val(row.teaName);
 	   				$("#claName").val(row.claName);
-	   				$("#addTime").val(row.addTime);
-	   				$("#remark").val(row.remark);
-	   				$("#points").val(row.points);
 	   				$("#sysId").val(row.sysId);
 	   				$("#myModalLabel").html("修改");
 	   			},
 	   			'click #deltTable': function(e, value, row, index) {
 	   				if(confirm("确定要执行该操作？")){
-	   					$.ajax({
-	   						type:"post",
-	   						url:"/eduClasses/deleteEduClasses?token="+localStorage.getItem("token"),
-	   						data:JSON.stringify({"sysId":row.sysId}),
-	   						contentType:'application/json',
-	   						success:function(res){
-	   							if(res.status=="01"){
-	   								$("#myModal").modal('hide');
-	   								$("#table").bootstrapTable('refresh');
-	   							}else{
-	   								alert("暂无权限")
-	   							}
-	   						}
-	   					})
+	   					if(row.count > 0){
+	   						alert("该班级下有学生，请确认是否已无学生！")
+	   					}else{
+		   					$.ajax({
+		   						type:"post",
+		   						url:"/eduClasses/deleteEduClasses?token="+localStorage.getItem("token"),
+		   						data:JSON.stringify({"sysId":row.sysId}),
+		   						contentType:'application/json',
+		   						success:function(res){
+		   							if(res.status=="01"){
+		   								$("#myModal").modal('hide');
+		   								$("#table").bootstrapTable('refresh');
+		   							}else{
+		   								alert("暂无权限")
+		   							}
+		   						}
+		   					})
+	   					}
 	   				}
 	   			}
 	   		},
@@ -180,11 +345,7 @@ function submit(){
 		alert("班级名称不能为空！");
 	}else{
 		var data=JSON.stringify({
-			"teaName":$("#teaName").val(),
 			"claName":$("#claName").val(),
-			"addTime":$("#addTime").val(),
-			"remark":$("#remark").val(),
-			"points":$("#points").val(),
 			"sysId":$("#sysId").val()
 		})
 		if(dialog==0){
@@ -240,6 +401,294 @@ function exportData(){
         },
     });
 }
+//----------------------------------------------------------------班级end
+//----------------------------------------------------------------部门begin
+function init1(){
+	$('#table1').bootstrapTable('destroy').bootstrapTable({
+	    url: "/eduDept/getEduDeptList?token="+localStorage.getItem("token"),
+	    pagination: true,
+	    method:"post",
+	    height:"400",
+	    queryParams : function(params) {//上传服务器的参数
+	    	var temp = {
+	            offset :params.offset + 0,// SQL语句起始索引
+	            pageNumber : params.limit,  // 每页显示数量
+	            name:$("#queryName").val()
+	        };
+	        return temp;
+	    },
+	    columns: [{
+	   	    field: 'id',
+	   	 	align:'center',
+	   	    title: '序号',
+	   	    formatter: function (value, row, index) {
+	   	        return index+1;
+	   	    }
+	   	},{
+	    	field: 'sysId',
+	    	align:'center',
+	        title: '序列号',
+	        visible: false,
+	        width:100,
+	        formatter: function (value, row, index) {
+	   	     	return '<a href="/classesDetail?sysId='+row.sysId+'&token='+localStorage.getItem("token")+'">'+row.sysId+'</a>';
+	   	    }
+	    },{
+	        field: 'name',
+	        align:'center',
+	        title: '部门名称',
+	    },{
+	        field: 'count',
+	        align:'center',
+	        title: '部门人数',
+	   },{
+	        field: 'createTime',
+	        align:'center',
+	        title: '新增时间',
+	    },{
+	    	field:'operate',
+	    	align:'center',
+	    	title:'操作',
+	    	events: window.operateEvents = {
+	   			'click #editTable': function(e, value, row, index) {
+	   				dialog=0
+	   				$("#name1").val(row.name);
+	   				$("#sysId1").val(row.sysId);
+	   				$("#myModalLabel1").html("修改");
+	   			},
+	   			'click #deltTable': function(e, value, row, index) {
+	   				if(confirm("确定要执行该操作？")){
+	   					if(row.count > 0){
+	   						alert("该班级下有学生，请确认是否已无学生！")
+	   					}else{
+		   					$.ajax({
+		   						type:"post",
+		   						url:"/eduDept/deleteEduDept?token="+localStorage.getItem("token"),
+		   						data:JSON.stringify({"sysId":row.sysId}),
+		   						contentType:'application/json',
+		   						success:function(res){
+		   							if(res.status=="01"){
+		   								$("#myModal1").modal('hide');
+		   								$("#table1").bootstrapTable('refresh');
+		   							}else{
+		   								alert("暂无权限")
+		   							}
+		   						}
+		   					})
+	   					}
+	   				}
+	   			}
+	   		},
+	    	formatter:function(value,row,index){
+	    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal1">修改</button>&nbsp;'+
+	    		'<button class="btn btn-danger" id="deltTable">删除</button>'
+	    	}
+	    }]
+	});
+}
+function submit1(){
+	if($("#name1").val() == ""){
+		alert("部门名称不能为空！");
+	}else{
+		var data=JSON.stringify({
+			"name":$("#name1").val(),
+			"sysId":$("#sysId1").val()
+		})
+		if(dialog==0){
+			$.ajax({
+				type:"post",
+				url:"/eduDept/updateEduDept?token="+localStorage.getItem("token"),
+				contentType:'application/json',
+				data:data,
+				success:function(res){
+					if(res.status=="01"){
+						alert(res.message)
+						$("#myModal1").modal('hide');
+						$("#table1").bootstrapTable('refresh');
+					}else{
+						alert("暂无权限")
+					}
+				}
+			})
+		}else{
+			$.ajax({
+				type:"post",
+				url:"/eduDept/saveEduDept?token="+localStorage.getItem("token"),
+				contentType:'application/json',
+				data:data,
+				success:function(res){
+					if(res.status=="01"){
+						alert(res.message)
+						$("#myModal1").modal('hide');
+						$("#table1").bootstrapTable('refresh');
+					}else{
+						alert("暂无权限")
+					}
+				}
+			})
+		}
+	}
+}
+$("#saveButton1").click(function(){
+	dialog=1
+	$("#name1").val("");
+	$("#myModalLabel1").html("新增");
+})
+
+function exportData1(){
+    $('#table1').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,4],//忽略某一列的索引
+        fileName: '部门情况',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
+}
+//----------------------------------------------------------------部门end
+//-------------------------------------------------------------班级begin
+function init2(){
+	$('#table2').bootstrapTable('destroy').bootstrapTable({
+	    url: "/eduCourse/getEduCourseList?token="+localStorage.getItem("token"),
+	    pagination: true,
+	    method:"post",
+	    height:"400",
+	    queryParams : function(params) {//上传服务器的参数
+	    	var temp = {
+	            offset :params.offset + 0,// SQL语句起始索引
+	            pageNumber : params.limit,  // 每页显示数量
+	            name:$("#queryName2").val()
+	        };
+	        return temp;
+	    },
+	    columns: [{
+	   	    field: 'id',
+	   	 	align:'center',
+	   	    title: '序号',
+	   	    formatter: function (value, row, index) {
+	   	        return index+1;
+	   	    }
+	   	},{
+	    	field: 'sysId',
+	    	align:'center',
+	        title: '序列号',
+	        visible: false,
+	    },{
+	        field: 'name',
+	        align:'center',
+	        title: '课程名称',
+	    },{
+	        field: 'count',
+	        align:'center',
+	        title: '课程人数',
+	   },{
+	        field: 'createTime',
+	        align:'center',
+	        title: '新增时间',
+	    },{
+	    	field:'operate',
+	    	align:'center',
+	    	title:'操作',
+	    	events: window.operateEvents = {
+	   			'click #editTable': function(e, value, row, index) {
+	   				dialog=0
+	   				$("#name2").val(row.name);
+	   				$("#sysId2").val(row.sysId);
+	   				$("#myModalLabel").html("修改");
+	   			},
+	   			'click #deltTable': function(e, value, row, index) {
+	   				if(confirm("确定要执行该操作？")){
+	   					if(row.count > 0){
+	   						alert("该班级下有学生，请确认是否已无学生！")
+	   					}else{
+		   					$.ajax({
+		   						type:"post",
+		   						url:"/eduCourse/deleteEduCourse?token="+localStorage.getItem("token"),
+		   						data:JSON.stringify({"sysId":row.sysId}),
+		   						contentType:'application/json',
+		   						success:function(res){
+		   							if(res.status=="01"){
+		   								$("#myModal2").modal('hide');
+		   								$("#table2").bootstrapTable('refresh');
+		   							}else{
+		   								alert("暂无权限")
+		   							}
+		   						}
+		   					})
+	   					}
+	   				}
+	   			}
+	   		},
+	    	formatter:function(value,row,index){
+	    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal2">修改</button>&nbsp;'+
+	    		'<button class="btn btn-danger" id="deltTable">删除</button>'
+	    	}
+	    }]
+	});
+}
+function submit2(){
+	if($("#name2").val() == ""){
+		alert("课程名称不能为空！");
+	}else{
+		var data=JSON.stringify({
+			"name":$("#name2").val(),
+			"sysId":$("#sysId2").val()
+		})
+		if(dialog==0){
+			$.ajax({
+				type:"post",
+				url:"/eduCourse/updateEduCourse?token="+localStorage.getItem("token"),
+				contentType:'application/json',
+				data:data,
+				success:function(res){
+					if(res.status=="01"){
+						alert(res.message)
+						$("#myModal2").modal('hide');
+						$("#table2").bootstrapTable('refresh');
+					}else{
+						alert("暂无权限")
+					}
+				}
+			})
+		}else{
+			$.ajax({
+				type:"post",
+				url:"/eduCourse/saveEduCourse?token="+localStorage.getItem("token"),
+				contentType:'application/json',
+				data:data,
+				success:function(res){
+					if(res.status=="01"){
+						alert(res.message)
+						$("#myModal2").modal('hide');
+						$("#table2").bootstrapTable('refresh');
+					}else{
+						alert("暂无权限")
+					}
+				}
+			})
+		}
+	}
+}
+
+$("#saveButton2").click(function(){
+	dialog=1
+	$("#name2").val("");
+	$("#myModalLabel2").html("新增");
+})
+
+function exportData2(){
+    $('#table2').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,4],//忽略某一列的索引
+        fileName: '班级情况',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
+}
+//----------------------------------------------------------------课程end
 </script>
 <script src="getMsUser.js"></script>
 </body>

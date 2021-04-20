@@ -23,19 +23,19 @@ public class EduClassesController {
 		return eduClassesService.getEduClassesList(vo); 
 	}
 	
-	@Log(operation = "新增" , remark="【班级管理】新增班级管理" , type = "0")
+	@Log(operation = "新增" , remark="【班级】新增班级" , type = "0")
 	@RequestMapping({"/saveEduClasses"})
 	public Result<Object> saveEduClasses(@RequestBody EduClassesVo vo,HttpServletRequest request) {
 		return eduClassesService.saveEduClasses(vo); 
 	}
    
-	@Log(operation = "修改" , remark="【班级管理】修改班级管理" , type = "0")
+	@Log(operation = "修改" , remark="【班级】修改班级" , type = "0")
 	@RequestMapping({"/updateEduClasses"})
 	public Result<Object> updateEduClasses(@RequestBody EduClassesVo vo) { 
 		return eduClassesService.updateEduClasses(vo); 
 	}
    
-	@Log(operation = "删除" , remark="【班级管理】删除班级管理" , type = "0")
+	@Log(operation = "删除" , remark="【班级】删除班级" , type = "0")
 	@RequestMapping({"/deleteEduClasses"})
 	public Result<Object> deleteEduClasses(@RequestBody EduClassesVo vo) { 
 		return eduClassesService.deleteEduClasses(vo); 
