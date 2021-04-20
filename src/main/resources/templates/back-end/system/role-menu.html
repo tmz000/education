@@ -175,11 +175,15 @@ $('#table').bootstrapTable({
    				$(".select-picker-search-checked").html(row.menuName)
    				$(".select-picker-options-list-item").each(function(i,e){
    					$(this).html($(this).html().replace("checked","nocheck"))
-   					if(row.menuId.split(",").length == $(".select-picker-options-list-item").length-1){
-   		        		$(this).html($(this).html().replace("nocheck","checked"))
-   					}else if(row.menuId.indexOf($(this).data("val")) > -1){
-   		        		$(this).html($(this).html().replace("nocheck","checked"))
-   		        	}
+   					if(row.menuId != null){
+	   					if(row.menuId.split(",").length == $(".select-picker-options-list-item").length-1){
+	   		        		$(this).html($(this).html().replace("nocheck","checked"))
+	   					}else if(row.menuId.indexOf($(this).data("val")) > -1){
+	   		        		$(this).html($(this).html().replace("nocheck","checked"))
+	   		        	}
+   					}else{
+   						$(".select-picker-search-checked").html("请选择")
+   					}
    		        });
    				$("#sysId").val(row.sysId);
    			},
@@ -290,7 +294,6 @@ $("#saveButton").click(function(){
 	$(".select-picker-search-checked").html("请选择")
 	$(".select-picker-options-list-item").each(function(i,e){
 		$(this).html($(this).html().replaceAll("checked","nocheck"))
-		console.log($(this).html())
     });
 })
 
@@ -312,13 +315,6 @@ function formatTableUnit(value, row, index) {
         }
     }
 }        
-
-function queryParams(){
-	var params = {
-		type:"1"	
-	}
-	return params;
-}
 </script>
 <script src="js/select2.js"></script>
 <script src="getMsUser.js"></script>

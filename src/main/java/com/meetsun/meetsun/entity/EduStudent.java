@@ -15,6 +15,7 @@ public class EduStudent {
 	private String updateTime;
 	
 	private String claName;
+	private String courseName;
 	private Integer offset;
 	private Integer pageNumber;
 }
