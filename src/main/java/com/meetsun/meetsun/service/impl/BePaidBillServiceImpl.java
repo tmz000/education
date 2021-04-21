@@ -48,17 +48,23 @@ public class BePaidBillServiceImpl implements BePaidBillService{
 			DateBillTypeVo dvo = new DateBillTypeVo();
 			dvo.setSysId(b.getBillType());
 			List<DateBillType> li = dateBillTypeDao.getDateBillTypeList(dvo);
-			b.setType(li.get(0).getType());
+			if(li != null && li.size() > 0) {
+				b.setType(li.get(0).getType());
+			}
 			
 			EduClassesVo evo = new EduClassesVo();
 			evo.setSysId(b.getClaId());
 			List<EduClasses> lie = eduClassesDao.getEduClassesList(evo);
-			b.setClaName(lie.get(0).getClaName());
+			if(lie != null && lie.size() > 0) {
+				b.setClaName(lie.get(0).getClaName());
+			}
 			
 			EduStudentVo ev = new EduStudentVo();
 			ev.setSysId(b.getStuId());
 			List<EduStudent> lide = eduStudentDao.getEduStudentList(ev);
-			b.setStuName(lide.get(0).getName());
+			if(lide != null && lide.size() > 0) {
+				b.setStuName(lide.get(0).getName());
+			}
 			b.setSum(sum);
 			list1.add(b);
 		}

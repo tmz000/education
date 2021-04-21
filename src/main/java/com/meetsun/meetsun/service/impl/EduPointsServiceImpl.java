@@ -98,13 +98,13 @@ public class EduPointsServiceImpl implements EduPointsService{
 
 	@Override
 	public Result<Object> getEduPointsListByDate(EduPointsVo vo) {
-		if(vo.getAddTime() == "") {
+		if(vo.getAddTime() == "" || vo.getAddTime() == null) {
 			String nowTime = Tools.get10DateTimes();
 			if(Tools.getTrueTime(nowTime, Tools.getStarDate(16))) {
 				vo.setAddTime(Tools.getStarDate(1));
 				vo.setAndTime(Tools.getStarDate(15));
 			}else {
-				vo.setAddTime(Tools.getStarDate(15));
+				vo.setAddTime(Tools.getStarDate(16));
 				vo.setAndTime(Tools.getEndDate());
 			}
 		}

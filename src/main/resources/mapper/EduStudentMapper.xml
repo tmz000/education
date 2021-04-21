@@ -17,7 +17,7 @@
 			and come_date = #{comeDate}
 		</if> 
 		<if test="courseId != '' and courseId != null">
-			and course_id = #{courseId}
+			and locate(#{courseId},course_id)
 		</if> 
 		<if test="name != '' and name != null">
 			and name like CONCAT('%', #{name}, '%')
@@ -39,7 +39,7 @@
 			and come_date = #{comeDate}
 		</if> 
 		<if test="courseId != '' and courseId != null">
-			and course_id = #{courseId}
+			and locate(#{courseId},course_id)
 		</if>
 		<if test="name != '' and name != null">
 			and name like CONCAT('%', #{name}, '%')

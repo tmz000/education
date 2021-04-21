@@ -8,4 +8,5 @@ public interface KpiNotesService {
 	Result<Object> saveKpiNotes(KpiNotesVo vo);
 	Result<Object> updateKpiNotes(KpiNotesVo vo);
 	Result<Object> deleteKpiNotes(KpiNotesVo vo);
+	Result<Object> getKpiByStaffId(KpiNotesVo vo);
 }

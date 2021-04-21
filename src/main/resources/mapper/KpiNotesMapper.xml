@@ -2,13 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.KpiNotesDao">
 	<insert id="saveKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
-		insert into kpi_notes(sys_id,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,kpi_start_date,kpi_end_date,count_points，create_time,update_time)
-			values(#{sysId},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{kpiStartDate},#{kpiEndDate},#{countPoints},now(),now())
+		insert into kpi_notes(sys_id,serial_num,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,kpi_start_date,kpi_end_date,count_points,create_time,update_time)
+			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{kpiStartDate},#{kpiEndDate},#{countPoints},now(),now())
 	</insert>
 	<select id="getKpiNotesList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
 		select * from kpi_notes where 1=1
 		<if test="sysId != '' and sysId != null">
 			and sys_id = #{sysId}
+		</if> 
+		<if test="serialNum != '' and serialNum != null">
+			and serial_num = #{serialNum}
 		</if> 
 		<if test="staffId != '' and staffId != null">
 			and staff_id = #{staffId}
@@ -27,6 +30,14 @@
 			and staff_id = #{staffId}
 		</if> 
 	</select>
+	<!-- 获取某个人的kpi信息 -->
+	<select id="getKpiByStaffId" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
+		select pt.type as kpi_type,pt.points_make as kpi,pt.points,tt.reason,tt.dept_points,tt.staff_id,tt.staff_name,tt.dept_id as dept_id
+		from (select * from edu_points_type where type in ('德','勤','能','绩') ) pt 
+		LEFT JOIN (select * from (select p.remark as reason,p.points as dept_points,s.sys_id as staff_id,s.`name` as staff_name ,p.points_type_id,s.dept_id from edu_points p  left join edu_staff s on s.sys_id = p.tea_id  and p.add_time between #{addTime} and #{andTime} ) t where  t.staff_id = #{staffId}) tt 
+		on tt.points_type_id=pt.sys_id and pt.type in ('德','勤','能','绩') order by pt.create_time asc
+	</select>
+	
 	<update id="updateKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
 		update kpi_notes set update_time = now() where sys_id = #{sysId}
 	</update>

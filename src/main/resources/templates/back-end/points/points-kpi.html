@@ -15,6 +15,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.min.js"></script>
 </head>
 <body>
 <div id="body">
@@ -29,7 +30,7 @@
           <div class="widget-content">
           	<div style="width:98.5%;height:30px;">
             	<div style="width:50%;float:left;">
-		       		<button class="btn btn-info" id="saveButton" style="">导出</button>
+		       		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
             	</div>
             </div>
           	<div id="toolbar" style="width:100%;padding-top:10px;">
@@ -37,19 +38,17 @@
 		     		员工姓名：
           		</div>
           		<div style="float:left;">
-		     		<select id="teaId1"><option value="" disabled selected hidden>请选择姓名</option></select>&nbsp;&nbsp;&nbsp;
+		     		<select id="staffId"><option value="" disabled selected hidden>请选择姓名</option></select>&nbsp;&nbsp;&nbsp;
           		</div>
 		        <div style="float:left;">
-		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">生成</button>
 		        </div>
 		        <div style="float:left;">
 		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
 		        </div>
 		        <div style="clear:both;"></div>
             </div>
-            <div  style="width:100;border:1px solid #CDCDB4;padding-top:10px;">
-            	asdsad
-            </div>
+            <table id="table" style="white-space:nowrap;overflow: hidden"></table>
           </div>
         </div>
       </div>
@@ -58,6 +57,7 @@
 </div>
 </div>
 <script type="text/javascript">
+var isCreate = false;
 $(function(){
 	init();
 	$.ajax({
@@ -68,8 +68,7 @@ $(function(){
 		success:function(res){
 			if(res.status=="01"){
 				for(var i=0;i<res.rows.length;i++){
-					$("#teaId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
-					$("#teaId1").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
+					$("#staffId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
 				}
 			}else{
 				alert("暂无权限")
@@ -82,191 +81,181 @@ var dialog=null
 function init(){
 	$('#table').bootstrapTable('destroy');
 	$('#table').bootstrapTable({
-	    url: "/eduPoints/getEduPointsList?token="+localStorage.getItem("token"),
-	    pagination: true,
+	    url: "/kpiNotes/getKpiByStaffId?token="+localStorage.getItem("token"),
 	    toolbar:'#toolbar',
 	    method:"post",
-	    height:"400",
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
-	    		teaId:$("#teaId1").val(),
-	    		type:$("#queryType").val(),
-	    		claId:$("#claId1").val(),
-	    		addTime:$("#addTime1").val(),
+	    		staffId:$("#staffId").val(),
 	            offset :params.offset + 0,// SQL语句起始索引
 	            pageNumber : params.limit  // 每页显示数量
 	        };
 	        return temp;
 	    },
-	    columns: [{
-	   	    field: 'id',
-	   	 	align:'center',
-	   	    title: '序号',
-	   	    formatter: function (value, row, index) {
-	   	        return index+1;
-	   	    }
-	   	},{
-	    	field: 'sysId',
-	    	align:'center',
-	        title: '主键',
-	        visible: false
-	    },{
-	        field: 'teaName',
+	    columns: [
+	    {
+	        field: 'kpiType',
 	        align:'center',
-	        title: '姓名',
+	        title: '考核项目',
 	    },{
-	        field: 'claName',
+	        field: 'kpi',
 	        align:'center',
-	        title: '班级',
-	    },{
-	        field: 'type',
-	        align:'center',
-	        title: '所属',
-	    },{
-	        field: 'pointsMake',
-	        align:'center',
-	        title: '类型',
+	        title: '考核指标',
 	    },{
 	        field: 'points',
 	        align:'center',
-	        title: '积分',
+	        title: '权重分值',
+	    },{
+	        field: 'deptPoints',
+	        align:'center',
+	        title: '部门评分',
 	        formatter:function(value, row, index) {
-	        	if(row.points/1 > 0){
-		   	        return "<span style='color:#00ff00'>"+row.points+"</span>";
-	        	}else if(row.points/1 == 0){
-	        		return "<span>"+row.points+"</span>";
-	        	}else{
-	        		return "<span style='color:#FF0000'>"+row.points+"</span>";
+	        	if(row.deptPoints/1 != 0){
+	        		if(row.kpi == "合计"){
+	        			if(row.deptPoints >= 80){
+				   	        return "<span style='color:#00ff00'>"+row.deptPoints+"</span>";
+	        			}else{
+	        				return "<span style='color:#FF0000'>"+row.deptPoints+"</span>";
+	        			}
+	        		}else{
+			   	        return row.deptPoints;
+	        		}
+	        	}else if(row.deptPoints/1 == 0){
+	        		return row.points;
 	        	}
 	   	    }
 	    },{
-	        field: 'remark',
+	        field: 'adCheck',
 	        align:'center',
-	        title: '原因',
+	        title: '行政审核',
+	        formatter:function(value, row, index) {
+	        	if(row.adCheck/1 != 0){
+	        		if(row.kpi == "合计"){
+	        			if(row.adCheck >= 80){
+				   	        return "<span style='color:#00ff00'>"+row.adCheck+"</span>";
+	        			}else{
+	        				return "<span style='color:#FF0000'>"+row.adCheck+"</span>";
+	        			}
+	        		}else{
+			   	        return row.adCheck;
+	        		}
+	        	}else if(row.adCheck/1 == 0){
+	        		return row.points;
+	        	}
+	   	    }
+	    },{
+	        field: 'reason',
+	        halign:'center',
+	        align:'left',
+	        title: '分值原因',
 	        formatter:paramsMatter,
-	        cellStyle:formatTableUnit,
-	    },{
-	        field: 'addTime',
-	        align:'center',
-	        title: '日期',
-	   	},{
-	        field: 'createTime',
-	        align:'center',
-	        title: '记录时间',
-	    },{
-	    	field:'operate',
-	    	align:'center',
-	    	title:'操作',
-	    	events: window.operateEvents = {
-	   			'click #editTable': function(e, value, row, index) {
-	   				dialog=0
-	   				$("#teaId").val(row.teaId);
-	   				$("#claId").val(row.claId);
-	   				$("#addTime").val(row.addTime);
-	   				$("#remark").val(row.remark);
-	   				$("#type").val(row.type);
-	   				$("#pointsTypeId").val(row.pointsTypeId);
-	   				$("#points").val(row.points);
-	   				$("#sysId").val(row.sysId);
-	   				$("#myModalLabel").html("修改");
-	   				$("#type").trigger('change');
-	   			},
-	   			'click #deltTable': function(e, value, row, index) {
-	   				if(confirm("确定要执行该操作？")){
-	   					$.ajax({
-	   						type:"post",
-	   						url:"/eduPoints/deleteEduPoints?token="+localStorage.getItem("token"),
-	   						data:JSON.stringify({"sysId":row.sysId}),
-	   						contentType:'application/json',
-	   						success:function(res){
-	   							if(res.status=="01"){
-	   								$("#myModal").modal('hide');
-	   								$("#table").bootstrapTable('refresh');
-	   							}else{
-	   								alert("暂无权限")
-	   							}
-	   						}
-	   					})
-	   				}
-	   			}
-	   		},
-	    	formatter:function(value,row,index){
-	    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal">修改</button>&nbsp;'+
-	    		'<button class="btn btn-danger" id="deltTable">删除</button>'
+	        cellStyle:formatTableUnit
+	    }],
+	    onClickCell: function (field, value, row, $element) {
+            let index = $element.parent().data('index');
+            let tdValue = $element.html();
+	    	if(field == "adCheck"){
+	    		if(index != 20 && index != 21){
+	    			
+		            $element.attr('contenteditable', true);
+		            $element.blur(function () {
+		            	if(index != 22){
+			            	if(/^-?\d+$/.test(tdValue)){
+				                updateData(index, field, tdValue,row.sysId,row.adCheck);
+			            	}else{
+			            		if(row.deptPoints != ""){
+				            		$element.html(row.deptPoints)
+			            		}else{
+				            		$element.html(row.points)
+			            		}
+			            	}
+			    		}
+		            })
+	    		}
 	    	}
-	    }]
+	    	if(field == "deptPoints"){
+	    		if(index != 20){
+		            $element.attr('contenteditable', true);
+		            $element.blur(function () {
+		            	if(/^-?\d+$/.test(tdValue)){
+			                updateData(index, field, tdValue,row.sysId,row.deptPoints);
+		            	}else{
+		            		if(row.deptPoints != ""){
+			            		$element.html(row.deptPoints)
+		            		}else{
+			            		$element.html(row.points)
+		            		}
+		            	}
+		            })
+	    		}
+	    	}
+	    	if(field == "kpi"){
+	    		if(index == 22){
+		            $element.attr('contenteditable', true);
+		            $element.blur(function () {
+		                updateData(index, field, tdValue,row.sysId,row.kpi);
+		            })
+	    		}
+	    	}
+	    	if(field == "reason"){
+	    		if(index != 21){
+		            $element.attr('contenteditable', true);
+		            $element.blur(function () {
+		                updateData(index, field, $element.html(),row.sysId,row.reason);
+		            })
+	    		}
+	    	}
+        },
+	    onLoadSuccess: function (data) {
+	        //合并单元格
+	        data = data.rows
+	        appendData(data[0].deptName,data[0].staffName,data[0].addTime,data[0].andTime);
+	        appendData1();
+	        mergeCells($('#table'), "kpiType", "kpiType", );
+	        mergeColspan();//列合并
+	    },
 	});
 }
-function submit(){
-	if($("#addTime").val() == ""){
-		alert("日期不能为空！");
-	}else if($("#teaId").val() == ""){
-		alert("姓名不能为空！");
-	}else if($("#claId").val() == ""){
-		alert("班级不能为空！");
-	}else if($("#points").val() == ""){
-		alert("积分变化不能为空！");
-	}else if($("#remark").val() == ""){
-		alert("原因不能为空！");
-	}else{
-		var data=JSON.stringify({
-			"teaId":$("#teaId").val(),
-			"claId":$("#claId").val(),
-			"addTime":$("#addTime").val(),
-			"remark":$("#remark").val(),
-			"type":$("#type").val(),
-			"pointsTypeId":$("#pointsTypeId").val(),
-			"points":$("#points").val(),
-			"sysId":$("#sysId").val()
-		})
-		if(dialog==0){
-			$.ajax({
-				type:"post",
-				url:"/eduPoints/updateEduPoints?token="+localStorage.getItem("token"),
-				contentType:'application/json',
-				data:data,
-				success:function(res){
-					if(res.status=="01"){
-						alert(res.message)
-						$("#myModal").modal('hide');
-						$("#table").bootstrapTable('refresh');
-					}else{
-						alert("暂无权限")
-					}
-				}
-			})
-		}else{
-			$.ajax({
-				type:"post",
-				url:"/eduPoints/saveEduPoints?token="+localStorage.getItem("token"),
-				contentType:'application/json',
-				data:data,
-				success:function(res){
-					if(res.status=="01"){
-						alert(res.message)
-						$("#myModal").modal('hide');
-						$("#table").bootstrapTable('refresh');
-					}else{
-						alert("暂无权限")
-					}
-				}
-			})
-		}
-	}
+function mergeColspan() {
+	$('#table').bootstrapTable( 'mergeCells', { index: 22, field:"kpi", colspan: 2});
+	$('#table').bootstrapTable( 'mergeCells', { index: 22, field:"adCheck", colspan: 2});
 }
-
-$("#saveButton").click(function(){
-	dialog=1
-	$("#teaId").val("");
-	$("#claId").val("");
-	$("#addTime").val("");
-	$("#remark").val("");
-	$("#points").val("");
-	$("#type").val("");
-	$("#pointsTypeId").val("");
-	$("#myModalLabel").html("新增");
-})
-
+function mergeCells(bstable, fieldname, mcfield) {
+	var rows = bstable.bootstrapTable('getData');
+	var rowspan = 0;
+	var index = 0;
+	var first_yjzbmc = '';
+	$.each(rows,
+	function(i, row) {
+	    if (i == 0) {
+	        first_yjzbmc = row[fieldname];
+	        rowspan = 1;
+	        index = i;
+	    } else {
+	        if (first_yjzbmc === row[fieldname]) {
+	            rowspan++;
+	        } else {
+	            $(bstable).bootstrapTable('mergeCells', {
+	                index: index,
+	                field: mcfield,
+	                colspan: 1,
+	                rowspan: rowspan
+	            });
+	            first_yjzbmc = row[fieldname];
+	            rowspan = 1;
+	            index = i;
+	        }
+	        if (i == (rows.length - 1)) {
+	            $(bstable).bootstrapTable('mergeCells', {
+	                index: index,
+	                field: mcfield,
+	                colspan: 1,
+	                rowspan: rowspan
+	            });
+	        }
+	    }
+	});
+}
 //表格超出宽度鼠标悬停显示td内容
 function paramsMatter(value, row, index) {
     var span = document.createElement("span");
@@ -284,15 +273,94 @@ function formatTableUnit(value, row, index) {
             "max-width": "150px"
         }
     }
-}        
-Array.prototype.distinct = function(){
-	var newList = [],arr=this;
-　　	for(var i=0;i<arr.length;i++){
-　　　　	if(newList.indexOf(arr[i])==-1){ //不包含
-　　　　　　	newList.push(arr[i]);
-      　	}
-   	}
-　　	return newList;
+}  
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [],//忽略某一列的索引
+        fileName: 'KPI考核',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
+}
+function updateData(index, field, tdValue,sysId,oldValue){
+	console.log(index)
+	console.log(field)
+	console.log(tdValue)
+	console.log(sysId)
+}
+function appendData(deptName,staffName,addTime,andTime){
+	var data = {
+			kpiType:'部门' ,
+            kpi:deptName,
+            points:'员工',
+            deptPoints:staffName,
+            adCheck:'考核时间',
+            reason:addTime+'&nbsp;&nbsp;至&nbsp;&nbsp;'+andTime,
+		}
+	$('#table').bootstrapTable('append', data);
+}
+function appendData1(){
+	var data = {
+			kpiType:'部门签字' ,
+            kpi:'',
+            points:'',
+            deptPoints:'行政签字',
+            adCheck:'',
+            reason:'',
+		}
+	$('#table').bootstrapTable('append', data);
+}
+$("#queryTable").click(function(){
+	if($("#staffId").val() == undefined){
+		alert("请选择员工！")
+	}else{
+		if(!isCreate){
+			if(confirm("确定要生成"+getStart(getDate())+"至"+getEnd(getDate())+"的KPI绩效吗？")){
+				isCreate = true;
+				saveData();
+			}
+		}else{
+			saveData();
+		}
+	}
+})
+function saveData(){
+	
+}
+
+
+function getDate(){
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	var date = date.getDate();
+	if(month <10 ){
+		month = "0" + month;
+	}
+	if(date < 10){
+		date = "0" + date;
+	}
+	return year+"-"+month+"-"+date;
+}
+function getStart(date){
+	var time = date.split("-");
+	if(time[2]<15){
+    	return time[0]+"-"+time[1]+"-"+01;  
+	}else {
+		return time[0]+"-"+time[1]+"-"+16; 
+	}
+}
+function getEnd(date){
+	var time = date.split("-");
+	if(time[2]<=15){
+		return time[0]+"-"+time[1]+"-"+15;  
+	}else{
+		var day = new Date(time[0], time[1], 0).getDate();
+		return time[0]+"-"+time[1]+"-"+day;  
+	}
 }
 </script>
 <script src="getMsUser.js"></script>

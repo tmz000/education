@@ -28,7 +28,7 @@ public class EduCourseServiceImpl implements EduCourseService{
 		List<EduCourse> list = eduCourseDao.getEduCourseList(vo);
 		for(EduCourse et : list) {
 			EduStudentVo es = new EduStudentVo();
-			es.setClaId(et.getSysId());
+			es.setCourseId(et.getSysId());
 			et.setCount(eduStudentDao.getEduStudentList(es).size());
  		}
 		int total = eduCourseDao.getEduCourseListTotal(vo);

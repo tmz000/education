@@ -313,7 +313,7 @@ function init(){
 	   			'click #deltTable': function(e, value, row, index) {
 	   				if(confirm("确定要执行该操作？")){
 	   					if(row.count > 0){
-	   						alert("该班级下有学生，请确认是否已无学生！")
+	   						alert("请确认该班级是否已无学生！")
 	   					}else{
 		   					$.ajax({
 		   						type:"post",
@@ -459,7 +459,7 @@ function init1(){
 	   			'click #deltTable': function(e, value, row, index) {
 	   				if(confirm("确定要执行该操作？")){
 	   					if(row.count > 0){
-	   						alert("该班级下有学生，请确认是否已无学生！")
+	   						alert("请确认该部门是否已无员工！")
 	   					}else{
 		   					$.ajax({
 		   						type:"post",
@@ -600,7 +600,7 @@ function init2(){
 	   			'click #deltTable': function(e, value, row, index) {
 	   				if(confirm("确定要执行该操作？")){
 	   					if(row.count > 0){
-	   						alert("该班级下有学生，请确认是否已无学生！")
+	   						alert("请确认该课程是否已无学生选课！")
 	   					}else{
 		   					$.ajax({
 		   						type:"post",

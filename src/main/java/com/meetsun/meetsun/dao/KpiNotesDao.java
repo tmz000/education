@@ -34,4 +34,10 @@ public interface KpiNotesDao {
 	 * @return
 	 */
 	int deleteKpiNotes(KpiNotesVo vo);
+	/**
+	 * 获取某个人KPI
+	 * @param vo
+	 * @return
+	 */
+	List<KpiNotes> getKpiByStaffId(KpiNotesVo vo);
 }

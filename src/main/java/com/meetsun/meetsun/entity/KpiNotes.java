@@ -20,7 +20,12 @@ public class KpiNotes {
 	private String kpiEndDate;
 	private String createTime;
 	private String updateTime;
+	private String serialNum;
 	
+	private String staffName;
+	private String deptName;
+	private String addTime;
+	private String andTime;
 	private Integer offset;
 	private Integer pageNumber;
 }

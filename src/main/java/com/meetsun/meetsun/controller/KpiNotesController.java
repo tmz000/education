@@ -40,4 +40,9 @@ public class KpiNotesController {
 	public Result<Object> deleteKpiNotes(@RequestBody KpiNotesVo vo) { 
 		return kpiNotesService.deleteKpiNotes(vo); 
 	}
+	
+	@RequestMapping({"/getKpiByStaffId"})
+	public Result<Object> getKpiByStaffId(@RequestBody KpiNotesVo vo,HttpServletRequest request) { 
+		return kpiNotesService.getKpiByStaffId(vo); 
+	}
 }

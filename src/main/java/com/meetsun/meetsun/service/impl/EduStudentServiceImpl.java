@@ -64,7 +64,17 @@ public class EduStudentServiceImpl implements EduStudentService{
 
 	@Override
 	public Result<Object> saveEduStudent(EduStudentVo vo) {
+		List<String> strli = new ArrayList<String>();
 		vo.setSysId(Tools.getUUID());
+		if(vo.getCourseId() != null && vo.getCourseId() != "") {
+			for(String str : vo.getCourseId().split(",")) {
+				EduCourseVo evo = new EduCourseVo();
+				evo.setName(str);
+				List<EduCourse> li = eduCourseDao.getEduCourseList(evo);
+				strli.add(li.get(0).getSysId());
+			}
+			vo.setCourseId(strli.toString().substring(1,strli.toString().length()-1).replaceAll(" +",""));
+		}
 		int flag = eduStudentDao.saveEduStudent(vo);
 		if (flag > 0) {
 			return Result.success("success");

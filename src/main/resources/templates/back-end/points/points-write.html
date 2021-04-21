@@ -236,6 +236,7 @@ function init(){
 	    toolbar:'#toolbar',
 	    method:"post",
 	    height:"400",
+	  //  showFooter:true, 增加合计行
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
 	    		teaId:$("#teaId1").val(),
@@ -253,7 +254,10 @@ function init(){
 	   	    title: '序号',
 	   	    formatter: function (value, row, index) {
 	   	        return index+1;
-	   	    }
+	   	    },
+			 footerFormatter: function (value) {
+		         return '合计';
+		     }
 	   	},{
 	    	field: 'sysId',
 	    	align:'center',
@@ -287,7 +291,11 @@ function init(){
 	        	}else{
 	        		return "<span style='color:#FF0000'>"+row.points+"</span>";
 	        	}
-	   	    }
+	   	    },
+	   	 	footerFormatter: function (value) {
+	            var count = 0; for (var i=0;i< value.length;i++) { count += value[i].points/1 }
+	            return count; 
+	      	}
 	    },{
 	        field: 'remark',
 	        align:'center',
@@ -344,7 +352,8 @@ function init(){
 	    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal">修改</button>&nbsp;'+
 	    		'<button class="btn btn-danger" id="deltTable">删除</button>'
 	    	}
-	    }]
+	    }],
+	    onlyInfoPagination:false
 	});
 }
 function submit(){
