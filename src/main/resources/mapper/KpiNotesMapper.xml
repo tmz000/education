@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.KpiNotesDao">
 	<insert id="saveKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
-		insert into kpi_notes(sys_id,serial_num,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,kpi_start_date,kpi_end_date,count_points,create_time,update_time)
-			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{kpiStartDate},#{kpiEndDate},#{countPoints},now(),now())
+		insert into kpi_notes(sys_id,serial_num,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,add_time,and_time,count_points,create_time,update_time)
+			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{addTime},#{andTime},#{countPoints},now(),now())
 	</insert>
 	<select id="getKpiNotesList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
 		select * from kpi_notes where 1=1
@@ -16,7 +16,22 @@
 		<if test="staffId != '' and staffId != null">
 			and staff_id = #{staffId}
 		</if> 
-		order by create_time desc
+		<if test="staffId != '' and staffId != null">
+			and staff_id = #{staffId}
+		</if> 
+		<if test="addTime != '' and addTime != null">
+			and add_time = #{addTime}
+		</if> 
+		<if test="andTime != '' and andTime != null">
+			and and_time = #{andTime}
+		</if> 
+		<if test="kpi != '' and kpi != null">
+			and kpi = #{kpi}
+		</if> 
+		<if test="serialNum != '' and serialNum != null">
+			and serial_num = #{serialNum}
+		</if> 
+		order by field(kpi_type,'德','勤','能','绩'),points+0 asc,dept_points desc
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
 		</if>
@@ -29,19 +44,47 @@
 		<if test="staffId != '' and staffId != null">
 			and staff_id = #{staffId}
 		</if> 
+		<if test="kpi != '' and kpi != null">
+			and kpi = #{kpi}
+		</if>
+		<if test="serialNum != '' and serialNum != null">
+			and serial_num = #{serialNum}
+		</if>
 	</select>
 	<!-- 获取某个人的kpi信息 -->
 	<select id="getKpiByStaffId" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
-		select pt.type as kpi_type,pt.points_make as kpi,pt.points,tt.reason,tt.dept_points,tt.staff_id,tt.staff_name,tt.dept_id as dept_id
-		from (select * from edu_points_type where type in ('德','勤','能','绩') ) pt 
-		LEFT JOIN (select * from (select p.remark as reason,p.points as dept_points,s.sys_id as staff_id,s.`name` as staff_name ,p.points_type_id,s.dept_id from edu_points p  left join edu_staff s on s.sys_id = p.tea_id  and p.add_time between #{addTime} and #{andTime} ) t where  t.staff_id = #{staffId}) tt 
-		on tt.points_type_id=pt.sys_id and pt.type in ('德','勤','能','绩') order by pt.create_time asc
+		select pt.type as kpi_type,pt.points_make as kpi,pt.points,tt.reason,tt.dept_points,tt.staff_id,tt.staff_name,tt.dept_id as dept_id from (select * from edu_points_type where type in ('德','勤','能','绩') ) pt LEFT JOIN (select * from (select sum(dept_points)as dept_points,GROUP_CONCAT(reason) as reason,staff_id,points_type_id,dept_id,staff_name from (
+		SELECT
+			p.remark AS reason,
+			p.points AS dept_points,
+			s.sys_id AS staff_id,
+			s.`name` AS staff_name,
+			p.points_type_id,
+			s.dept_id 
+		FROM
+			edu_points p
+			LEFT JOIN edu_staff s ON s.sys_id = p.tea_id 
+			AND p.add_time BETWEEN #{addTime} 
+			AND #{andTime}) t group by staff_id,points_type_id,dept_id,staff_name ) t where t.staff_id = #{staffId}) tt on tt.points_type_id=pt.sys_id and pt.type in ('德','勤','能','绩') order by pt.create_time asc 
 	</select>
 	
 	<update id="updateKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
-		update kpi_notes set update_time = now() where sys_id = #{sysId}
+		update kpi_notes set 
+		<if test="kpi != '' and kpi != null">
+			kpi = #{kpi},
+		</if> 
+		<if test="deptPoints != '' and deptPoints != null">
+			dept_points = #{deptPoints},
+		</if> 
+		<if test="reason != '' and reason != null">
+			reason = #{reason},
+		</if>
+		<if test="adCheck != '' and adCheck != null">
+			ad_check = #{adCheck},
+		</if>
+		update_time = now() where sys_id = #{sysId}
 	</update>
 	<delete id="deleteKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
-		delete from kpi_notes where sys_id = #{sysId}
+		delete from kpi_notes where serial_num = #{serialNum} and staff_id = #{staffId}
 	</delete>
 </mapper>

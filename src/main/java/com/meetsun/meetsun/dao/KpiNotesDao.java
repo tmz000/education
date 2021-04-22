@@ -21,7 +21,7 @@ public interface KpiNotesDao {
 	 * @param paramMsUserVo
 	 * @return
 	 */
-	int saveKpiNotes(KpiNotesVo vo);
+	int saveKpiNotes(KpiNotes vo);
 	/**
 	 * 修改KPI考核信息
 	 * @param paramMsUserVo

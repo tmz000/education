@@ -16,16 +16,14 @@ public class KpiNotes {
 	private String deptSign;
 	private String adSign;
 	private String countPoints;
-	private String kpiStartDate;
-	private String kpiEndDate;
+	private String addTime;
+	private String andTime;
 	private String createTime;
 	private String updateTime;
 	private String serialNum;
 	
 	private String staffName;
 	private String deptName;
-	private String addTime;
-	private String andTime;
 	private Integer offset;
 	private Integer pageNumber;
 }

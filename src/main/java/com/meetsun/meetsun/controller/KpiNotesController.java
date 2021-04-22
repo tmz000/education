@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meetsun.meetsun.common.Log;
+import com.meetsun.meetsun.entity.KpiNotes;
 import com.meetsun.meetsun.service.KpiNotesService;
 import com.meetsun.meetsun.until.Result;
 import com.meetsun.meetsun.vo.KpiNotesVo;
@@ -25,7 +26,7 @@ public class KpiNotesController {
 	
 	@Log(operation = "新增" , remark="【KPI考核】新增KPI考核" , type = "0")
 	@RequestMapping({"/saveKpiNotes"})
-	public Result<Object> saveKpiNotes(@RequestBody KpiNotesVo vo,HttpServletRequest request) {
+	public Result<Object> saveKpiNotes(@RequestBody KpiNotes vo,HttpServletRequest request) {
 		return kpiNotesService.saveKpiNotes(vo); 
 	}
    

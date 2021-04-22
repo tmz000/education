@@ -30,6 +30,16 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 	@Override
 	public Result<Object> getKpiNotesList(KpiNotesVo vo) {
 		List<KpiNotes> list = kpiNotesDao.getKpiNotesList(vo);
+		for(KpiNotes kp : list) {
+			if(kp.getStaffId() != null && kp.getStaffId() != "") {
+				EduStaffVo evo = new EduStaffVo();
+				evo.setSysId(kp.getStaffId());
+				kp.setStaffName(eduStaffDao.getEduStaffList(evo).get(0).getName());
+				EduDeptVo edvo = new EduDeptVo();
+				edvo.setSysId(kp.getDeptId());
+				kp.setDeptName(eduDeptDao.getEduDeptList(edvo).get(0).getName());
+			}
+		}
 		Result result = new Result();
 		int total = kpiNotesDao.getKpiNotesListTotal(vo);
 		result.setStatus("01");
@@ -39,7 +49,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 	}
 
 	@Override
-	public Result<Object> saveKpiNotes(KpiNotesVo vo) {
+	public Result<Object> saveKpiNotes(KpiNotes vo) {
 		vo.setSysId(Tools.getUUID());
 		int flag = kpiNotesDao.saveKpiNotes(vo);
 		if (flag > 0) {
@@ -78,6 +88,8 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 				vo.setAndTime(Tools.getEndDate());
 			}
 		}
+		List<KpiNotes> listc = kpiNotesDao.getKpiNotesList(vo);
+		
 		String deptId = "";
 		String deptName = "";
 		String staffName = "";
@@ -96,14 +108,17 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		}
 		List<KpiNotes> list = kpiNotesDao.getKpiByStaffId(vo);
 		for(KpiNotes kp : list) {
-			if(kp.getAdCheck() == null) {
+			if(kp.getAdCheck() == null || kp.getAdCheck() == "") {
 				kp.setAdCheck("");
 			}
-			if(kp.getDeptPoints() == null) {
+			if(kp.getDeptPoints() == null || kp.getDeptPoints() == "") {
 				kp.setDeptPoints("");
 			}
 			if(vo.getStaffId() != null) {
 				kp.setStaffId(vo.getStaffId());
+			}
+			if(kp.getReason() == null || kp.getReason() == "") {
+				kp.setReason("");
 			}
 			kp.setDeptId(deptId);
 			kp.setDeptName(deptName);
@@ -135,6 +150,17 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		kp.setDeptPoints(String.valueOf(100+deptPointsSum));
 		kp.setAdCheck(String.valueOf(100+adCheckSum));
 		list.add(kp);
+		if(vo.getStaffId() != null && vo.getStaffId() != "") {
+			if(listc != null && listc.size() > 0) {
+				KpiNotesVo kvo = new KpiNotesVo();
+				kvo.setStaffId(vo.getStaffId());
+				kvo.setSerialNum(listc.get(0).getSerialNum());
+				deleteKpiNotes(kvo);
+			}
+			for(KpiNotes k : list) {
+				kpiNotesDao.saveKpiNotes(k);
+			}
+		}
 		return Result.success(list);
 	}
 }
