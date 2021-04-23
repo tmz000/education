@@ -29,6 +29,7 @@ public class EduDeptServiceImpl implements EduDeptService{
 		for(EduDept et : list) {
 			EduStaffVo es = new EduStaffVo();
 			es.setDeptId(et.getSysId());
+			es.setStatus("0");
 			et.setCount(eduStaffDao.getEduStaffList(es).size());
  		}
 		int total = eduDeptDao.getEduDeptListTotal(vo);

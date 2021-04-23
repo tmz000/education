@@ -16,6 +16,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.min.js"></script>
 <style>
 * {
     -webkit-box-sizing: border-box;
@@ -76,10 +77,10 @@
 		     		<input type="text" style="line-height:30px;height:30px;" class="form-control form_datetime" id="comeDate1" placeholder="请选择入校时间" autocomplete="off" onFocus="this.blur()">
           		</div>
 		        <div style="float:left;">
-		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable1">查询</button>
 		        </div>
 		        <div style="float:left;">
-		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+		        	&nbsp;<button class="btn btn-danger" id="clearTable1">清空</button>
 		        </div>
             	<div style="clear:both;"></div>
             </div>
@@ -160,7 +161,7 @@
 <script type="text/javascript">
 var queryS = 0;
 $(function(){
-	init(queryS);
+	init1(queryS);
 	$.ajax({
 		type:"post",
 		url:"/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
@@ -220,7 +221,7 @@ $(function(){
 	$("#myModal").hide()
 })
 var dialog=null
-function init(queryS){
+function init1(queryS){
 	$('#table').bootstrapTable('destroy').bootstrapTable({
 	    url: "/eduStudent/getEduStudentList?token="+localStorage.getItem("token"),
 	    pagination: true,
@@ -268,11 +269,6 @@ function init(queryS){
 	        align:'center',
 	        title: '入校时间',
 	    },{
-	        field: 'outDate',
-	        align:'center',
-	        title: '离校日期',
-	        visible: false
-	    },{
 	        field: 'atSchool',
 	        align:'center',
 	        title: '所在学校',
@@ -296,9 +292,14 @@ function init(queryS){
 	   	        if(row.status == "0"){
 	   	        	return "<span style='color:black'>在校</span>";
 	   	        }else{
-	   	        	return "<span style='color:black'>离校</span>";
+	   	        	return "<span style='color:red'>离校</span>";
 	   	        }
-	   	    }	        
+	   	    }	
+	    },{
+	        field: 'outDate',
+	        align:'center',
+	        title: '离校日期',
+	        visible: false
 	    },{
 	    	field:'operate',
 	    	align:'center',
@@ -460,24 +461,43 @@ $('.nav-tabs li').click(function(){
 
 	　　switch(_id){
 	　　　　case "tabContent1":
-	　　　　　　init("0");
+	　　　　　　init1("0");
 			queryS = 0;
 	　　　　　　break;
 	　　　　case "tabContent2":
-	　　　　　　init("1");
+	　　　　　　init1("1");
 			queryS = 1;
-			$('#table').bootstrapTable('hideColumn', 'comeDate');
 			$('#table').bootstrapTable('showColumn', 'outDate');
 	　　　　　　break;
 	　　　　default:
-	　　　　　　init("0");
+	　　　　　　init1("0");
 			queryS = 0;
 	　　　　　　break;
 	　　}
 });
-$("#queryTable").click(function(){
-	init(queryS)
+$("#queryTable1").click(function(){
+	init1(queryS)
 })
+$("#clearTable1").click(function(){
+	$("#toolbar input").each(function(){
+		 $(this).val('');
+	})
+	$("#toolbar select").each(function(){
+		 $(this).val('');
+	})
+	init1();
+})
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,10],//忽略某一列的索引
+        fileName: '生源统计',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
+}
 </script>
 <script src="js/select2.js"></script>
 <script src="getMsUser.js"></script>

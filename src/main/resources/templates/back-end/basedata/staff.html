@@ -15,6 +15,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.min.js"></script>
 <style>
 </style>
 </head>
@@ -103,7 +104,6 @@
      		<select id="status">
      			<option value="0">在职</option>
      			<option value="1">离职</option>
-     			<option value="2">请假</option>
      		</select>
      	</div>
      	<div class="leftCss">离职日期：</div>
@@ -133,7 +133,6 @@ $('.nav-tabs li').click(function(){
 	　　　　case "tabContent2":
 	　　　　　　init("1");
 			queryS = 1;
-			$('#table').bootstrapTable('hideColumn', 'comeDate');
 			$('#table').bootstrapTable('showColumn', 'outDate');
 	　　　　　　break;
 	　　　　default:
@@ -247,10 +246,8 @@ function init(queryS){
 	        formatter: function (value, row, index) {
 	   	        if(row.status == "0"){
 	   	        	return "<span style='color:black'>在职</span>";
-	   	        }else if(row.status == "1"){
+	   	        }else{
 	   	        	return "<span style='color:red'>离职</span>";
-	   	        }else if(row.status == "2"){
-	   	        	return "<span style='color:black'>请假</span>";
 	   	        }
 	   	    }
 	    },{
@@ -271,13 +268,15 @@ function init(queryS){
 	   				dialog=0
 	   				$("#name").val(row.name);
 	   				$("#deptId").val(row.deptId);
-	   				$("#deptTypeId").val(row.deptTypeId);
 	   				$("#comeDate").val(row.comeDate);
 	   				$("#status").val(row.status);
 	   				$("#outDate").val(row.outDate);
 	   				$("#sysId").val(row.sysId);
 	   				if(row.deptTypeId == "" || row.deptTypeId == null){
 		   				getDeptType(row.deptId)
+	   				}else{
+	   					getDeptType(row.deptId)
+	   					$("#deptTypeId").val(row.deptTypeId);	
 	   				}
 	   				$("#myModalLabel").html("修改");
 	   			},
@@ -395,6 +394,17 @@ function queryParams(){
 	var params = {
 	}
 	return params;
+}
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,6],//忽略某一列的索引
+        fileName: '员工统计',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
 }
 </script>
 <script src="getMsUser.js"></script>

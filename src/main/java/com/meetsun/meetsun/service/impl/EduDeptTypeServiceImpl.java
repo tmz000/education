@@ -40,6 +40,7 @@ public class EduDeptTypeServiceImpl implements EduDeptTypeService{
 			}
 			EduStaffVo es = new EduStaffVo();
 			es.setDeptTypeId(ef.getSysId());
+			es.setStatus("0");
 			ef.setCount(eduStaffDao.getEduStaffList(es).size());
 		}
 		int total = eduDeptTypeDao.getEduDeptTypeListTotal(vo);

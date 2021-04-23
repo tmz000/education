@@ -30,6 +30,7 @@ public class EduClassesServiceImpl implements EduClassesService{
 		for(EduClasses et : list) {
 			EduStudentVo es = new EduStudentVo();
 			es.setClaId(et.getSysId());
+			es.setStatus("0");
 			et.setCount(eduStudentDao.getEduStudentList(es).size());
  		}
 		int total = eduClassesDao.getEduClassesListTotal(vo);
