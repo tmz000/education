@@ -11,6 +11,10 @@ public class EduStudentVo {
 	private String status;
 	private String comeDate;
 	private String outDate;
+	private String atSchool;
+	private String atGrade;
+	private String parent;
+	private String mobile;
 	private String createTime;
 	private String updateTime;
 	

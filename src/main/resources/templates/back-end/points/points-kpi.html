@@ -50,7 +50,7 @@
 			        &nbsp;-&nbsp;
           		</div>
           		<div style="float:left;">
-	     			<input type="text" class="form-control form_datetime" id="andTime" placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
+	     			<input type="text" class="form-control form_datetime" id="andTime" disabled placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
 		        </div>
 		        <div style="float:left;">
 		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable1">生成</button>
@@ -172,7 +172,7 @@ function init(){
 	    }],
 	    onClickCell: function (field, value, row, $element) {
 	    	var tableData = $('#table').bootstrapTable('getData');
-	    	if(tableData[21].points != "员工"){
+	    	if(tableData[21].deptPoints != ""){
 	            let index = $element.parent().data('index');
 	            let tdValue = $element.html();
 		    	if(field == "adCheck"){
@@ -181,7 +181,7 @@ function init(){
 			            $element.blur(function () {
 			            	if(index != 22){
 				            	if(/^-?\d+$/.test(tdValue)){
-					                updateData(index, field, tdValue,row.sysId,row.adCheck);
+					                updateData(index, field, tdValue,row.sysId);
 				            	}else{
 				            		if(row.deptPoints != ""){
 					            		$element.html(row.deptPoints)
@@ -190,7 +190,7 @@ function init(){
 				            		}
 				            	}
 				    		}else{
-				    			updateData(index, field, tdValue,row.sysId,row.adCheck);
+				    			updateData(index, field, tdValue,row.sysId);
 				    		}
 			            })
 		    		}
@@ -200,7 +200,7 @@ function init(){
 			            $element.attr('contenteditable', true);
 			            $element.blur(function () {
 			            	if(/^-?\d+$/.test(tdValue)){
-				                updateData(index, field, tdValue,row.sysId,row.deptPoints);
+				                updateData(index, field, tdValue,row.sysId);
 			            	}else{
 			            		if(row.deptPoints != ""){
 				            		$element.html(row.deptPoints)
@@ -212,10 +212,11 @@ function init(){
 		    		}
 		    	}
 		    	if(field == "kpi"){
+		    		console.log(row)
 		    		if(index == 22){
 			            $element.attr('contenteditable', true);
 			            $element.blur(function () {
-			                updateData(index, field, tdValue,row.sysId,row.kpi);
+			                updateData(index, field, tdValue,row.sysId);
 			            })
 		    		}
 		    	}
@@ -223,7 +224,7 @@ function init(){
 		    		if(index != 21 && index != 20){
 			            $element.attr('contenteditable', true);
 			            $element.blur(function () {
-			                updateData(index, field, $element.html(),row.sysId,row.reason);
+			                updateData(index, field, $element.html(),row.sysId);
 			            })
 		    		}
 		    	}
@@ -238,8 +239,8 @@ function init(){
 	    onLoadSuccess: function (data) {
 	        //合并单元格
 	        data = data.rows
-	        appendData(data[0].deptName,data[0].staffName,data[0].addTime,data[0].andTime);
-	        appendData1();
+	        //appendData(data[0].deptName,data[0].staffName,data[0].addTime,data[0].andTime,data[0].sysId);
+	        //appendData1(data[0].sysId);
 	        mergeCells($('#table'), "kpiType", "kpiType", );
 	        mergeColspan();//列合并
 	    },
@@ -314,7 +315,8 @@ function exportData(){
         },
     });
 }
-function updateData(index, field, tdValue,sysId,oldValue){
+function updateData(index, field, tdValue,sysId){
+	console.log("tdValue="+tdValue+",sysId="+sysId)
 	var data = {sysId:sysId};
 	if(field == "kpi"){
 		data.kpi = tdValue;
@@ -336,7 +338,7 @@ function updateData(index, field, tdValue,sysId,oldValue){
 		}
 	})
 }
-function appendData(deptName,staffName,addTime,andTime){
+/* function appendData(deptName,staffName,addTime,andTime,sysId){
 	var data = {
 			kpiType:'部门' ,
             kpi:deptName,
@@ -344,10 +346,11 @@ function appendData(deptName,staffName,addTime,andTime){
             deptPoints:staffName,
             adCheck:'考核时间',
             reason:addTime+'&nbsp;&nbsp;至&nbsp;&nbsp;'+andTime,
+            sysId:sysId
 		}
 	$('#table').bootstrapTable('append', data);
 }
-function appendData1(){
+function appendData1(sysId){
 	var data = {
 			kpiType:'部门签字' ,
             kpi:'',
@@ -355,9 +358,10 @@ function appendData1(){
             deptPoints:'行政签字',
             adCheck:'',
             reason:'',
+            sysId:sysId
 		}
 	$('#table').bootstrapTable('append', data);
-}
+} */
 $("#addTime").change(function(){
 	var time = $(this).val().split("-");
 	if(time[2]<15){
@@ -410,38 +414,6 @@ function getDate(){
 		date = "0" + date;
 	}
 	return year+"-"+month+"-"+date;
-}
-function getStart(date){
-	var time = date.split("-");
-	if(time[2]<15){
-    	return time[0]+"-"+time[1]+"-"+01;  
-	}else {
-		return time[0]+"-"+time[1]+"-"+16; 
-	}
-}
-function getEnd(date){
-	var time = date.split("-");
-	if(time[2]<=15){
-		return time[0]+"-"+time[1]+"-"+15;  
-	}else{
-		var day = new Date(time[0], time[1], 0).getDate();
-		return time[0]+"-"+time[1]+"-"+day;  
-	}
-}
-function getStaffName(staffId){
-	$.ajax({
-		type:"post",
-		url:"/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
-		data:JSON.stringify({staffId:staffId}),
-		contentType:'application/json',
-		success:function(res){
-			if(res.status=="01"){
-				$("#staffName").val(res.rows[0].name)
-			}else{
-				alert("暂无权限")
-			}
-		}
-	})
 }
 </script>
 <script src="getMsUser.js"></script>

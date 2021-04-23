@@ -49,7 +49,7 @@
 			        &nbsp;-&nbsp;
           		</div>
           		<div style="float:left;">
-	     			<input type="text" class="form-control form_datetime" id="andTime" placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
+	     			<input type="text" class="form-control form_datetime" disabled id="andTime" placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
 		        </div>
 		        <div style="float:left;">
 		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
@@ -85,6 +85,15 @@ $(function(){
 			}
 		}
 	})
+	var time = getDate().split("-");
+	if(time[2]<15){
+        $("#addTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+01));  
+        $("#andTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+15));
+	}else {
+		var day = new Date(time[0], time[1], 0).getDate();
+		$("#addTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+16)); 
+		$("#andTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+day));
+	}
 })
 var dialog=null
 function init(){
@@ -99,6 +108,8 @@ function init(){
 	    	var temp = {
 	    		staffId:$("#staffId1").val(),
 	    		kpi:"合计",
+	    		addTime:$("#addTime").val(),
+	    		andTime:$("#andTime").val(),
 	            offset :params.offset + 0,// SQL语句起始索引
 	            pageNumber : params.limit  // 每页显示数量
 	        };
@@ -181,6 +192,30 @@ function init(){
 	    	}
 	    }]
 	});
+}
+$("#addTime").change(function(){
+	var time = $(this).val().split("-");
+	if(time[2]<15){
+        $(this).datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+01));  
+        $("#andTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+15));
+	}else {
+		var day = new Date(time[0], time[1], 0).getDate();
+		$(this).datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+16)); 
+		$("#andTime").datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+day));
+	}
+})
+function getDate(){
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	var date = date.getDate();
+	if(month <10 ){
+		month = "0" + month;
+	}
+	if(date < 10){
+		date = "0" + date;
+	}
+	return year+"-"+month+"-"+date;
 }
 </script>
 <script src="getMsUser.js"></script>

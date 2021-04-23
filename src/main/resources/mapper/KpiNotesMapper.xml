@@ -16,9 +16,6 @@
 		<if test="staffId != '' and staffId != null">
 			and staff_id = #{staffId}
 		</if> 
-		<if test="staffId != '' and staffId != null">
-			and staff_id = #{staffId}
-		</if> 
 		<if test="addTime != '' and addTime != null">
 			and add_time = #{addTime}
 		</if> 
@@ -28,10 +25,7 @@
 		<if test="kpi != '' and kpi != null">
 			and kpi = #{kpi}
 		</if> 
-		<if test="serialNum != '' and serialNum != null">
-			and serial_num = #{serialNum}
-		</if> 
-		order by field(kpi_type,'德','勤','能','绩'),points+0 asc,dept_points desc
+		order by field(kpi_type,'德','勤','能','绩','部门','部门签字'),points+0 asc,dept_points desc
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
 		</if>
@@ -50,6 +44,12 @@
 		<if test="serialNum != '' and serialNum != null">
 			and serial_num = #{serialNum}
 		</if>
+		<if test="addTime != '' and addTime != null">
+			and add_time = #{addTime}
+		</if> 
+		<if test="andTime != '' and andTime != null">
+			and and_time = #{andTime}
+		</if> 
 	</select>
 	<!-- 获取某个人的kpi信息 -->
 	<select id="getKpiByStaffId" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">

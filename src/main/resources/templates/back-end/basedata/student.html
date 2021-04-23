@@ -42,6 +42,10 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
+          	<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active" data-id="tabContent1"><a href="#">在校</a></li>
+				<li role="presentation" data-id="tabContent2"><a href="#">离校</a></li>
+			</ul>
           	<div style="width:98.5%;height:40px;">
             	<div style="width:50%;float:left;">&nbsp;
             	</div>
@@ -88,9 +92,9 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-backdrop="static">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="height:450px;overflow:auto;width:464px;">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="border-radius:10px 10px 0 0;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">积分</h4>
       </div>
@@ -104,7 +108,7 @@
      	<div class="rightCss">
      		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control" id="name" placeholder="请输入学生姓名"/>
      	</div>
-     	<div class="leftCss" style="line-height:40px;height:40px;">所在班级：</div>
+     	<div class="leftCss" style="line-height:40px;height:40px;">班级：</div>
      	<div class="rightCss">
      		<select class="form-control" style="ine-height:40px;height:40px;width:230px;" id="claId"></select>
      	</div>
@@ -113,6 +117,22 @@
      		<div class="selectPickerWrapper showYear" data-model="全选" > 
      			<select class="hidden" id="courseId"></select>
      		</div>
+     	</div>
+     	<div class="leftCss" style="ine-height:40px;height:40px;">所在学校：</div>
+     	<div class="rightCss">
+     		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control" id="atSchool" placeholder="请输入所在学校">
+     	</div>
+     	<div class="leftCss" style="ine-height:40px;height:40px;">所在年级：</div>
+     	<div class="rightCss">
+     		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control" id="atGrade" placeholder="请输入所在学校">
+     	</div>
+     	<div class="leftCss" style="ine-height:40px;height:40px;">家长姓名：</div>
+     	<div class="rightCss">
+     		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control" id="parent" placeholder="请输入家长姓名">
+     	</div>
+     	<div class="leftCss" style="ine-height:40px;height:40px;">联系方式：</div>
+     	<div class="rightCss">
+     		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control" id="mobile" placeholder="请输入家长联系方式">
      	</div>
      	<div class="leftCss" style="ine-height:40px;height:40px;"><span style="color:red">*</span>入校日期：</div>
      	<div class="rightCss">
@@ -123,7 +143,6 @@
      		<select id="status" style="ine-height:40px;height:40px;width:230px;">
      			<option value="0">在校</option>
      			<option value="1">离校</option>
-     			<option value="2">请假</option>
      		</select>
      	</div>
      	<div class="leftCss" style="ine-height:40px;height:40px;">离校日期：</div>
@@ -131,7 +150,7 @@
      		<input type="text" style="ine-height:40px;height:40px;width:230px;" class="form-control form_datetime" id="outDate" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
      	</div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="border-radius:0 0 10px 10px;">
         <button type="button" class="btn btn-primary" onclick="submit()">提交</button>
       </div>
     </div>
@@ -139,8 +158,9 @@
 </div>
 </div>
 <script type="text/javascript">
+var queryS = 0;
 $(function(){
-	init();
+	init(queryS);
 	$.ajax({
 		type:"post",
 		url:"/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
@@ -200,7 +220,7 @@ $(function(){
 	$("#myModal").hide()
 })
 var dialog=null
-function init(){
+function init(queryS){
 	$('#table').bootstrapTable('destroy').bootstrapTable({
 	    url: "/eduStudent/getEduStudentList?token="+localStorage.getItem("token"),
 	    pagination: true,
@@ -213,6 +233,7 @@ function init(){
 	            comeDate:$("#comeDate1").val(),
 	            claId:$("#claId1").val(),
 	            name:$("#queryName").val(),
+	            status:queryS
 	        };
 	        return temp;
 	    },
@@ -235,11 +256,38 @@ function init(){
 	    },{
 	        field: 'claName',
 	        align:'center',
-	        title: '所在班级',
+	        title: '班级',
+	    },{
+	        field: 'courseName',
+	        align:'center',
+	        title: '课程',
+	        formatter:paramsMatter,
+	        cellStyle:formatTableUnit
 	    },{
 	        field: 'comeDate',
 	        align:'center',
 	        title: '入校时间',
+	    },{
+	        field: 'outDate',
+	        align:'center',
+	        title: '离校日期',
+	        visible: false
+	    },{
+	        field: 'atSchool',
+	        align:'center',
+	        title: '所在学校',
+	    },{
+	        field: 'atGrade',
+	        align:'center',
+	        title: '所在年级',
+	    },{
+	        field: 'parent',
+	        align:'center',
+	        title: '家长姓名',
+	    },{
+	        field: 'mobile',
+	        align:'center',
+	        title: '联系方式',
 	    },{
 	        field: 'status',
 	        align:'center',
@@ -247,26 +295,10 @@ function init(){
 	        formatter: function (value, row, index) {
 	   	        if(row.status == "0"){
 	   	        	return "<span style='color:black'>在校</span>";
-	   	        }else if(row.status == "1"){
+	   	        }else{
 	   	        	return "<span style='color:black'>离校</span>";
-	   	        }else if(row.status == "2"){
-	   	        	return "<span style='color:black'>请假</span>";
 	   	        }
-	   	    }
-	    },{
-	        field: 'courseName',
-	        align:'center',
-	        title: '所选课程',
-	        formatter:paramsMatter,
-	        cellStyle:formatTableUnit
-	    },{
-	        field: 'outDate',
-	        align:'center',
-	        title: '离校日期',
-	   /*  },{
-	        field: 'createTime',
-	        align:'center',
-	        title: '新增时间' */
+	   	    }	        
 	    },{
 	    	field:'operate',
 	    	align:'center',
@@ -279,6 +311,10 @@ function init(){
 	   				$("#comeDate").val(row.comeDate);
 	   				$("#status").val(row.status);
 	   				$("#outDate").val(row.outDate);
+	   				$("#atSchool").val(row.atSchool);
+	   				$("#atGrade").val(row.atGrade);
+	   				$("#parent").val(row.parent);
+	   				$("#mobile").val(row.mobile);
 	   				$("#sysId").val(row.sysId);
 	   				$("#myModalLabel").html("修改");
 	   				$("#courseId").val(row.courseId);
@@ -338,7 +374,11 @@ function submit(){
 			"status":$("#status").val(),
 			"outDate":$("#outDate").val(),
 			"courseId":$(".select-picker-search-checked").html(),
-			"sysId":$("#sysId").val()
+			"sysId":$("#sysId").val(),
+			"atSchool":$("#atSchool").val(),
+			"atGrade":$("#atGrade").val(),
+			"parent":$("#parent").val(),
+			"mobile":$("#mobile").val()
 		})
 		if(dialog==0){
 			$.ajax({
@@ -383,6 +423,10 @@ $("#saveButton").click(function(){
 	$("#comeDate").val("");
 	$("#status").val("0");
 	$("#outDate").val("");
+	$("#atGrade").val("");
+	$("#atSchool").val("");
+	$("#parent").val("");
+	$("#mobile").val("");
 	$("#myModalLabel").html("新增");
 	$("#courseId").val("");
 	$(".select-picker-search-checked").html("请选择")
@@ -408,7 +452,32 @@ function formatTableUnit(value, row, index) {
             "max-width": "150px"
         }
     }
-}        
+}  
+$('.nav-tabs li').click(function(){
+	　　$(this).addClass('active').siblings().removeClass('active');
+	　　var _id = $(this).attr('data-id');
+	　　$('.tabs-contents').find('#'+_id).addClass('active').siblings().removeClass('active');
+
+	　　switch(_id){
+	　　　　case "tabContent1":
+	　　　　　　init("0");
+			queryS = 0;
+	　　　　　　break;
+	　　　　case "tabContent2":
+	　　　　　　init("1");
+			queryS = 1;
+			$('#table').bootstrapTable('hideColumn', 'comeDate');
+			$('#table').bootstrapTable('showColumn', 'outDate');
+	　　　　　　break;
+	　　　　default:
+	　　　　　　init("0");
+			queryS = 0;
+	　　　　　　break;
+	　　}
+});
+$("#queryTable").click(function(){
+	init(queryS)
+})
 </script>
 <script src="js/select2.js"></script>
 <script src="getMsUser.js"></script>

@@ -29,6 +29,10 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
+          	<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active" data-id="tabContent1"><a href="#">在职</a></li>
+				<li role="presentation" data-id="tabContent2"><a href="#">离职</a></li>
+			</ul>
           	<div style="width:98.5%;height:40px;">
             	<div style="width:50%;float:left;">&nbsp;
             	</div>
@@ -85,9 +89,10 @@
      	<div class="rightCss">
      		<input type="text" class="form-control" id="name" placeholder="请输入员工姓名"/>
      	</div>
-     	<div class="leftCss"><span style="color:red">*</span>员工类型：</div>
+     	<div class="leftCss"><span style="color:red">*</span>所属部门：</div>
      	<div class="rightCss">
-     		<select id="deptId"></select>
+     		<select id="deptId" style="width:110px"></select>
+     		<select id="deptTypeId" style="width:105px"></select>
      	</div>
      	<div class="leftCss"><span style="color:red">*</span>入职日期：</div>
      	<div class="rightCss">
@@ -114,8 +119,31 @@
 </div>
 </div>
 <script type="text/javascript">
+var queryS=0;
+$('.nav-tabs li').click(function(){
+	　　$(this).addClass('active').siblings().removeClass('active');
+	　　var _id = $(this).attr('data-id');
+	　　$('.tabs-contents').find('#'+_id).addClass('active').siblings().removeClass('active');
+
+	　　switch(_id){
+	　　　　case "tabContent1":
+	　　　　　　init("0");
+			queryS = 0;
+	　　　　　　break;
+	　　　　case "tabContent2":
+	　　　　　　init("1");
+			queryS = 1;
+			$('#table').bootstrapTable('hideColumn', 'comeDate');
+			$('#table').bootstrapTable('showColumn', 'outDate');
+	　　　　　　break;
+	　　　　default:
+	　　　　　　init("0");
+			queryS = 0;
+	　　　　　　break;
+	　　}
+});
 $(function(){
-	init();
+	init(queryS);
 	$.ajax({
 		type:"post",
 		url:"/eduClasses/getEduClassesList?token="+localStorage.getItem("token"),
@@ -147,10 +175,31 @@ $(function(){
 			}
 		}
 	})
+	$("#deptId").change(function(){
+		getDeptType($("#deptId").val())
+	})
 	$("#myModal").hide()
 })
+function getDeptType(deptId){
+	$.ajax({
+		type:"post",
+		url:"/eduDeptType/getEduDeptTypeList?token="+localStorage.getItem("token"),
+		data:JSON.stringify({deptId:deptId}),
+		contentType:'application/json',
+		success:function(res){
+			if(res.status=="01"){
+				$("#deptTypeId").html("");
+				for(var i=0;i<res.rows.length;i++){
+					$("#deptTypeId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
+				}
+			}else{
+				alert("暂无权限")
+			}
+		}
+	})
+}
 var dialog=null
-function init(){
+function init(queryS){
 	$('#table').bootstrapTable('destroy').bootstrapTable({
 	    url: "/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
 	    pagination: true,
@@ -163,6 +212,7 @@ function init(){
 	            claId:$("#claId1").val(),
 	            name:$("#name1").val(),
 	            comeDate:$("#comeDate1").val(),
+	            status:queryS
 	        };
 	        return temp;
 	    },
@@ -185,11 +235,11 @@ function init(){
 	    },{
 	        field: 'deptName',
 	        align:'center',
-	        title: '员工类型'
+	        title: '所属部门'
 	    },{
-	        field: 'comeDate',
+	        field: 'deptTypeName',
 	        align:'center',
-	        title: '入职时间',
+	        title: '部门职务'
 	    },{
 	        field: 'status',
 	        align:'center',
@@ -204,13 +254,14 @@ function init(){
 	   	        }
 	   	    }
 	    },{
+	        field: 'comeDate',
+	        align:'center',
+	        title: '入职时间',
+	    },{
 	        field: 'outDate',
 	        align:'center',
 	        title: '离职日期',
-	   /*  },{
-	        field: 'createTime',
-	        align:'center',
-	        title: '新增时间' */
+	        visible: false
 	    },{
 	    	field:'operate',
 	    	align:'center',
@@ -220,10 +271,14 @@ function init(){
 	   				dialog=0
 	   				$("#name").val(row.name);
 	   				$("#deptId").val(row.deptId);
+	   				$("#deptTypeId").val(row.deptTypeId);
 	   				$("#comeDate").val(row.comeDate);
 	   				$("#status").val(row.status);
 	   				$("#outDate").val(row.outDate);
 	   				$("#sysId").val(row.sysId);
+	   				if(row.deptTypeId == "" || row.deptTypeId == null){
+		   				getDeptType(row.deptId)
+	   				}
 	   				$("#myModalLabel").html("修改");
 	   			},
 	   			'click #deltTable': function(e, value, row, index) {
@@ -264,6 +319,7 @@ function submit(){
 			"name":$("#name").val(),
 			"outDate":$("#outDate").val(),
 			"deptId":$("#deptId").val(),
+			"deptTypeId":$("#deptTypeId").val(),
 			"comeDate":$("#comeDate").val(),
 			"status":$("#status").val(),
 			"sysId":$("#sysId").val()
@@ -309,6 +365,8 @@ $("#saveButton").click(function(){
 	$("#name").val("");
 	$("#type").val("");
 	$("#comeDate").val("");
+	$("#deptId").val("");
+	$("#deptTypeId").val("");
 	$("#status").val("0");
 	$("#outDate").val("");
 	$("#myModalLabel").html("新增");

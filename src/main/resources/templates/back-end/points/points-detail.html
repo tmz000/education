@@ -49,7 +49,6 @@ $(function(){
 var dialog=null
 function init(){
 	var locationUrl = location.search;
-	console.log(locationUrl)
 	$('#table').bootstrapTable('destroy');
 	$('#table').bootstrapTable({
 	    url: "/kpiNotes/getKpiNotesList?token="+localStorage.getItem("token"),
@@ -179,9 +178,6 @@ function init(){
         },
  */	    onLoadSuccess: function (data) {
 	        //合并单元格
-	        data = data.rows
-	        appendData(data[0].deptName,data[0].staffName,data[0].addTime,data[0].andTime);
-	        appendData1();
 	        mergeCells($('#table'), "kpiType", "kpiType", );
 	        mergeColspan();//列合并
 	    },
@@ -257,33 +253,8 @@ function exportData(){
     });
 }
 function updateData(index, field, tdValue,sysId,oldValue){
-	console.log(index)
-	console.log(field)
-	console.log(tdValue)
-	console.log(sysId)
 }
-function appendData(deptName,staffName,addTime,andTime){
-	var data = {
-			kpiType:'部门' ,
-            kpi:deptName,
-            points:'员工',
-            deptPoints:staffName,
-            adCheck:'考核时间',
-            reason:addTime+'&nbsp;&nbsp;至&nbsp;&nbsp;'+andTime,
-		}
-	$('#table').bootstrapTable('append', data);
-}
-function appendData1(){
-	var data = {
-			kpiType:'部门签字' ,
-            kpi:'',
-            points:'',
-            deptPoints:'行政签字',
-            adCheck:'',
-            reason:'',
-		}
-	$('#table').bootstrapTable('append', data);
-}
+
 $("#addTime").change(function(){
 	var time = $(this).val().split("-");
 	if(time[2]<15){

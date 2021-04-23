@@ -134,6 +134,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 				adCheckSum = adCheckSum + Integer.valueOf(kp.getAdCheck());
 			}
 		}
+		//增加合计
 		KpiNotes kp = new KpiNotes();
 		kp.setDeptId(deptId);
 		kp.setDeptName(deptName);
@@ -144,12 +145,47 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		kp.setSerialNum(serialNum);
 		kp.setSysId(Tools.getUUID());
 		kp.setKpiType(list.get(list.size()-1).getKpiType());
-		kp.setAdCheck("");
 		kp.setKpi("合计");
 		kp.setPoints("100");
 		kp.setDeptPoints(String.valueOf(100+deptPointsSum));
 		kp.setAdCheck(String.valueOf(100+adCheckSum));
+		kp.setReason("");
 		list.add(kp);
+		//增加底部两行数据
+		KpiNotes kp1 = new KpiNotes();
+		kp1.setDeptId(deptId);
+		kp1.setDeptName(deptName);
+		kp1.setAddTime(vo.getAddTime());
+		kp1.setAndTime(vo.getAndTime());
+		kp1.setStaffId(vo.getStaffId());
+		kp1.setStaffName(staffName);
+		kp1.setSerialNum(serialNum);
+		kp1.setSysId(Tools.getUUID());
+		kp1.setKpiType("部门");
+		kp1.setKpi(deptName);
+		kp1.setPoints("员工");
+		kp1.setDeptPoints(staffName);
+		kp1.setAdCheck("考核时间");
+		kp1.setReason(vo.getAddTime()+"&nbsp;&nbsp;至&nbsp;&nbsp;"+vo.getAndTime());
+		list.add(kp1);
+		
+		KpiNotes kp2 = new KpiNotes();
+		kp2.setDeptId(deptId);
+		kp2.setDeptName(deptName);
+		kp2.setAddTime(vo.getAddTime());
+		kp2.setAndTime(vo.getAndTime());
+		kp2.setStaffId(vo.getStaffId());
+		kp2.setStaffName(staffName);
+		kp2.setSerialNum(serialNum);
+		kp2.setSysId(Tools.getUUID());
+		kp2.setKpiType("部门签字");
+		kp2.setKpi("");
+		kp2.setPoints("");
+		kp2.setDeptPoints("行政签字");
+		kp2.setAdCheck("");
+		kp2.setReason("");
+		list.add(kp2);
+		
 		if(vo.getStaffId() != null && vo.getStaffId() != "") {
 			if(listc != null && listc.size() > 0) {
 				KpiNotesVo kvo = new KpiNotesVo();
