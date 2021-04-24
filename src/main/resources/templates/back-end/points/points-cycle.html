@@ -96,7 +96,7 @@
 $.ajax({
 	type:"post",
 	url:"/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
-	data:JSON.stringify({type:"0"}),
+	data:JSON.stringify({status:"0"}),
 	contentType:'application/json',
 	success:function(res){
 		if(res.status=="01"){

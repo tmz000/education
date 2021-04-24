@@ -220,7 +220,7 @@ $(function(){
 	$.ajax({
 		type:"post",
 		url:"/eduStudent/getEduStudentList?token="+localStorage.getItem("token"),
-		data:JSON.stringify({}),
+		data:JSON.stringify({status:"0"}),
 		contentType:'application/json',
 		success:function(res){
 			if(res.status=="01"){
