@@ -44,7 +44,7 @@
             		</div>
             	</div>
             </div>
-			<div id="toolbar" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+			<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		账单类型：
           		</div>
@@ -636,7 +636,7 @@ function exportData(){
         type: 'excel',
         exportDataType: "all",
         ignoreColumn: [0,6],//忽略某一列的索引
-        fileName: '待缴费统计',//下载文件名称
+        fileName: '日录账单',//下载文件名称
         onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
             return data;
         },

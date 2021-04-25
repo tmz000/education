@@ -15,6 +15,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.min.js"></script>
 </head>
 <body>
 <div id="body">
@@ -27,12 +28,16 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
-          	<!-- <div style="width:98.5%;height:30px;">
-            	<div style="width:50%;float:left;">
-		       		<button class="btn btn-info" id="saveButton" style="">导出</button>
+          	<div style="width:98.5%;height:30px;">
+            	<div style="width:50%;float:left;">&nbsp;
             	</div>
-            </div> -->
-          	<div id="toolbar" style="width:100%;padding-top:10px;">
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+            		</div>
+            	</div>
+            </div>
+          	<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		员工姓名：
           		</div>
@@ -136,6 +141,10 @@ function init(){
 	        align:'center',
 	        title: '部门',
 	    },{
+	        field: 'deptTypeName',
+	        align:'center',
+	        title: '部门',
+	    },{
 	        field: 'deptPoints',
 	        align:'center',
 	        title: '积分',
@@ -216,6 +225,17 @@ function getDate(){
 		date = "0" + date;
 	}
 	return year+"-"+month+"-"+date;
+}
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,8],//忽略某一列的索引
+        fileName: 'KPI考核',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
 }
 </script>
 <script src="getMsUser.js"></script>

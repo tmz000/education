@@ -12,6 +12,7 @@ public class KpiNotesVo {
 	private String adCheck;
 	private String reason;
 	private String deptId;
+	private String deptTypeId;
 	private String staffId;
 	private String deptSign;
 	private String adSign;

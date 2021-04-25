@@ -13,6 +13,7 @@
 <script src="bootstrap-table/bootstrap-table.js"></script>
 <script src="bootstrap-table/bootstrap-dialog.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.min.js"></script>
 </head>
 <body>
 <div id="body">
@@ -25,7 +26,35 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
-       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="float:right">新增</button>
+          	<div style="width:98.5%;height:40px;">
+            	<div style="width:50%;float:left;">&nbsp;
+            	</div>
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+			       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="">新增</button>
+	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+            		</div>
+            	</div>
+            </div>
+          	<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;">
+	          		<div style="float:left;margin-top:5px;">
+			     		类型：
+	          		</div>
+	          		<div style="float:left;">
+			     		<input id="queryType" type="text" class="form-control" placeholder="请输入账单类型"/>&nbsp;&nbsp;&nbsp;
+	          		</div>
+          		</div>
+          		<div style="float:left;">
+			        <div style="float:left;">
+			        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+			        </div>
+			        <div style="float:left;">
+			        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+			        </div>
+		        </div>
+		        <div style="clear:both;"></div>
+            </div>
           	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
           </div>
         </div>
@@ -63,79 +92,83 @@
 <input type="hidden" id="oldBillType">
 <script type="text/javascript">
 var dialog=null
-$('#table').bootstrapTable('destroy');
-$('#table').bootstrapTable({
-    url: "/dateBillType/getDateBillTypeList?token="+localStorage.getItem("token"),
-    pagination: true,
-    search:true,
-    method:"post",
-    height:"400",
-    queryParams : function(params) {//上传服务器的参数
-    	var temp = {
-            offset :params.offset + 0,// SQL语句起始索引
-            pageNumber : params.limit  // 每页显示数量
-        };
-        return temp;
-    },
-    columns: [{
-   	    field: 'id',
-   	 	align:'center',
-   	    title: '序号',
-   	    formatter: function (value, row, index) {
-   	        return index+1;
-   	    }
-   	},{
-    	field: 'sysId',
-    	align:'center',
-        title: '主键',
-        visible: false
-    },{
-        field: 'type',
-        align:'center',
-        title: '类型'
-    },{
-        field: 'createTime',
-        align:'center',
-        title: '新增时间'
-    },{
-    	field:'operate',
-    	align:'center',
-    	title:'操作',
-    	events: window.operateEvents = {
-   			'click #editTable': function(e, value, row, index) {
-   				dialog=0
-   				$("#type").val(row.type);
-   				$("#sysId").val(row.sysId);
-   				$("#oldBillType").val(row.type);
-   			},
-   			'click #deltTable': function(e, value, row, index) {
-   				if(confirm("确定要执行该操作？")){
-   					$.ajax({
-   						type:"post",
-   						url:"/dateBillType/deleteDateBillType?token="+localStorage.getItem("token"),
-   						data:JSON.stringify({"sysId":row.sysId,type:row.type}),
-   						contentType:'application/json',
-   						success:function(res){
-   							if(res.status=="01"){
-   								$("#myModal").modal('hide');
-   								$("#table").bootstrapTable('refresh');
-   							}else{
-   								if(res.message == undefined){
-   									alert("暂无权限")
-   								}
-   								alert(res.message)
-   							}
-   						}
-   					})
-   				}
-   			}
-   		},
-    	formatter:function(value,row,index){
-    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal">修改</button>&nbsp;'+
-    		'<button class="btn btn-danger" id="deltTable">删除</button>'
-    	}
-    }],
-});
+$(function(){
+	init()
+})
+function init(){
+	$('#table').bootstrapTable('destroy').bootstrapTable({
+	    url: "/dateBillType/getDateBillTypeList?token="+localStorage.getItem("token"),
+	    pagination: true,
+	    method:"post",
+	    height:"400",
+	    queryParams : function(params) {//上传服务器的参数
+	    	var temp = {
+	    		type:$("#queryType").val(),
+	            offset :params.offset + 0,// SQL语句起始索引
+	            pageNumber : params.limit  // 每页显示数量
+	        };
+	        return temp;
+	    },
+	    columns: [{
+	   	    field: 'id',
+	   	 	align:'center',
+	   	    title: '序号',
+	   	    formatter: function (value, row, index) {
+	   	        return index+1;
+	   	    }
+	   	},{
+	    	field: 'sysId',
+	    	align:'center',
+	        title: '主键',
+	        visible: false
+	    },{
+	        field: 'type',
+	        align:'center',
+	        title: '类型'
+	    },{
+	        field: 'createTime',
+	        align:'center',
+	        title: '新增时间'
+	    },{
+	    	field:'operate',
+	    	align:'center',
+	    	title:'操作',
+	    	events: window.operateEvents = {
+	   			'click #editTable': function(e, value, row, index) {
+	   				dialog=0
+	   				$("#type").val(row.type);
+	   				$("#sysId").val(row.sysId);
+	   				$("#oldBillType").val(row.type);
+	   			},
+	   			'click #deltTable': function(e, value, row, index) {
+	   				if(confirm("确定要执行该操作？")){
+	   					$.ajax({
+	   						type:"post",
+	   						url:"/dateBillType/deleteDateBillType?token="+localStorage.getItem("token"),
+	   						data:JSON.stringify({"sysId":row.sysId,type:row.type}),
+	   						contentType:'application/json',
+	   						success:function(res){
+	   							if(res.status=="01"){
+	   								$("#myModal").modal('hide');
+	   								$("#table").bootstrapTable('refresh');
+	   							}else{
+	   								if(res.message == undefined){
+	   									alert("暂无权限")
+	   								}
+	   								alert(res.message)
+	   							}
+	   						}
+	   					})
+	   				}
+	   			}
+	   		},
+	    	formatter:function(value,row,index){
+	    		return '<button class="btn btn-info" id="editTable" data-toggle="modal" data-target="#myModal">修改</button>&nbsp;'+
+	    		'<button class="btn btn-danger" id="deltTable">删除</button>'
+	    	}
+	    }],
+	});
+}
 function submit(){
 	if($("#type").val() == "" || $("#type").val() == null){
 		alert("请输入类型！");
@@ -210,11 +243,16 @@ function formatTableUnit(value, row, index) {
         }
     }
 }        
-
-function queryParams(){
-	var params = {
-	}
-	return params;
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,6],//忽略某一列的索引
+        fileName: '待缴费统计',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
 }
 </script>
 <script src="js/select2.js"></script>

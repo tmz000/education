@@ -84,6 +84,12 @@ public class BePaidBillServiceImpl implements BePaidBillService{
 //		if(vo.getHouPay().equals("") || vo.getHouPay() == null) {
 //			vo.setHouPay("0");
 //		}
+		EduStudentVo ev = new EduStudentVo();
+		ev.setSysId(vo.getStuId());
+		List<EduStudent> lide = eduStudentDao.getEduStudentList(ev);
+		if(lide != null && lide.size() > 0) {
+			vo.setStuName(lide.get(0).getName());
+		}
 		int flag = bePaidBillDao.saveBePaidBill(vo);
 		if (flag > 0) {
 			return Result.success("success");

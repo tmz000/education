@@ -30,6 +30,25 @@
 				<li role="presentation" class="active" data-id="tabContent1"><a href="#">后台</a></li>
 				<li role="presentation" data-id="tabContent2"><a href="#">前台</a></li>
 			</ul> -->
+          	<div id="toolbar3" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;">
+	          		<div style="float:left;margin-top:5px;">
+			     		账户：
+	          		</div>
+	          		<div style="float:left;">
+			     		<input type="text" class="form-control" id="queryUserName" placeholder="请输入用户名"/>&nbsp;&nbsp;&nbsp;
+	          		</div>
+          		</div>
+		        <div style="float:left;">
+			        <div style="float:left;">
+			        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+			        </div>
+			        <div style="float:left;">
+			        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+			        </div>
+		        </div>
+            	<div style="clear:both;"></div>
+            </div>
           	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
           </div>
         </div>
@@ -69,6 +88,7 @@ function init(){
 	    height:"400",
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
+	    		userName:$("#queryUserName").val(),
 	    		type:"0",
 	            offset :params.offset + 0,// SQL语句起始索引
 	            pageNumber : params.limit  // 每页显示数量

@@ -40,22 +40,26 @@
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 			       		<button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="">新增</button>
-	            		<!-- <button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button> -->
+	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
             		</div>
             	</div>
             </div>
-          	<div id="toolbar" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
-          		<div style="float:left;margin-top:5px;">
-		     		班级：
+          	<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left">
+	          		<div style="float:left;margin-top:5px;">
+			     		班级：
+	          		</div>
+	          		<div style="float:left;">
+			     		<input type="text" class="form-control" id="queryClaName" placeholder="请输入班级名称"/>&nbsp;&nbsp;&nbsp;
+	          		</div>
           		</div>
-          		<div style="float:left;">
-		     		<input type="text" class="form-control" id="queryClaName" placeholder="请输入班级名称"/>&nbsp;&nbsp;&nbsp;
-          		</div>
-		        <div style="float:left;">
-		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
-		        </div>
-		        <div style="float:left;">
-		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+          		<div style="float:left">
+			        <div style="float:left;">
+			        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+			        </div>
+			        <div style="float:left;">
+			        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+			        </div>
 		        </div>
             	<div style="clear:both;"></div>
             </div>
@@ -67,11 +71,11 @@
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 			       		<button class="btn btn-info" id="saveButton1" data-toggle="modal" data-target="#myModal1" style="">新增</button>
-	            		<!-- <button class="btn btn-success" onclick="exportData1()" class='btn btn-mini btn-info'>导出</button> -->
+	            		<button class="btn btn-success" onclick="exportData1()" class='btn btn-mini btn-info'>导出</button>
             		</div>
             	</div>
             </div>
-          	<div id="toolbar1" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          	<div id="toolbar1" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		部门：
           		</div>
@@ -94,11 +98,11 @@
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 			       		<button class="btn btn-info" id="saveButton2" data-toggle="modal" data-target="#myModal2" style="">新增</button>
-	            		<!-- <button class="btn btn-success" onclick="exportData2()" class='btn btn-mini btn-info'>导出</button> -->
+	            		<button class="btn btn-success" onclick="exportData2()" class='btn btn-mini btn-info'>导出</button>
             		</div>
             	</div>
             </div>
-          	<div id="toolbar2" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          	<div id="toolbar2" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		课程：
           		</div>
@@ -121,11 +125,11 @@
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 			       		<button class="btn btn-info" id="saveButton3" data-toggle="modal" data-target="#myModal3" style="">新增</button>
-	            		<!-- <button class="btn btn-success" onclick="exportData3()" class='btn btn-mini btn-info'>导出</button> -->
+	            		<button class="btn btn-success" onclick="exportData3()" class='btn btn-mini btn-info'>导出</button>
             		</div>
             	</div>
             </div>
-          	<div id="toolbar3" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          	<div id="toolbar3" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		部门：
           		</div>
@@ -779,7 +783,7 @@ function exportData2(){
         type: 'excel',
         exportDataType: "all",
         ignoreColumn: [0,4],//忽略某一列的索引
-        fileName: '班级情况',//下载文件名称
+        fileName: '课程情况',//下载文件名称
         onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
             return data;
         },
@@ -931,7 +935,7 @@ function exportData3(){
         type: 'excel',
         exportDataType: "all",
         ignoreColumn: [0,5],//忽略某一列的索引
-        fileName: '班级情况',//下载文件名称
+        fileName: '部门职务',//下载文件名称
         onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
             return data;
         },

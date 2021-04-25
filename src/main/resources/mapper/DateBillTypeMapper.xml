@@ -11,7 +11,7 @@
 			and sys_id = #{sysId}
 		</if> 
 		<if test="type != '' and type != null">
-			and type = #{type}
+			and type like CONCAT('%', #{type}, '%')
 		</if> 
 		order by create_time desc
 		<if test="offset != null">
@@ -24,7 +24,7 @@
 			and sys_id = #{sysId}
 		</if> 
 		<if test="type != '' and type != null">
-			and type = #{type}
+			and type like CONCAT('%', #{type}, '%')
 		</if> 
 	</select>
 	<update id="updateDateBillType" parameterType="com.meetsun.meetsun.entity.DateBillType">

@@ -34,37 +34,47 @@
 				<li role="presentation" class="active" data-id="tabContent1"><a href="#">未缴费</a></li>
 				<li role="presentation" data-id="tabContent2"><a href="#">已缴费</a></li>
 			</ul>
-			<div id="toolbar" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
-          		<div style="float:left;margin-top:5px;">
-		     		学生姓名：
+			<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
+          		<div style="float:left;">
+	          		<div style="float:left;margin-top:5px;">
+			     		学生姓名：
+	          		</div>
+	          		<div style="float:left;">
+			     		<input type="text" id="queryStuName" class="form-control" placeholder="请选择学生姓名" />&nbsp;&nbsp;&nbsp;
+	          		</div>
           		</div>
           		<div style="float:left;">
-		     		<select id="queryStuId"><option value="" disabled selected hidden>请选择学生姓名</option></select>&nbsp;&nbsp;&nbsp;
-          		</div>
-          		<div style="float:left;margin-top:5px;">
-		     		班级：
-          		</div>
-          		<div style="float:left;">
-		     		<select id="queryClaId" style="width:80px;"><option value="" disabled selected hidden>请选择班级</option></select>&nbsp;&nbsp;&nbsp;
-          		</div>
-          		<div style="float:left;margin-top:5px;">
-		     		类型：
+	          		<div style="float:left;margin-top:5px;">
+			     		班级：
+	          		</div>
+	          		<div style="float:left;">
+			     		<select id="queryClaId"><option value="" disabled selected hidden>请选择班级</option></select>&nbsp;&nbsp;&nbsp;
+	          		</div>
           		</div>
           		<div style="float:left;">
-		     		<select id="queryType"><option value="" disabled selected hidden>请选择类型</option></select>&nbsp;&nbsp;&nbsp;
-          		</div>
-          		<div style="float:left;margin-top:5px;">
-		     		预缴费时间：
-          		</div>
-          		<div style="float:left;">
-		     		<input type="text" class="form-control form_datetime" id="queryPayTime" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
-          		</div>
-		        <div style="float:left;">
-		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
-		        </div>
-		        <div style="float:left;">
-		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
-		        </div>
+	          		<div style="float:left;margin-top:5px;">
+			     		类型：
+	          		</div>
+	          		<div style="float:left;">
+			     		<select id="queryType"><option value="" disabled selected hidden>请选择类型</option></select>&nbsp;&nbsp;&nbsp;
+	          		</div>
+	          	</div>
+	          	<div style="float:left;">
+	          		<div style="float:left;margin-top:5px;">
+			     		预缴费时间：
+	          		</div>
+	          		<div style="float:left;">
+			     		<input type="text" class="form-control form_datetime" id="queryPayTime" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
+	          		</div>
+	          	</div>
+	          	<div style="float:left;">
+			        <div style="float:left;">
+			        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+			        </div>
+			        <div style="float:left;">
+			        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+			        </div>
+			    </div>
 		        <div style="clear:both;"></div>
             </div>
             <div style="width:98.5%;height:30px;">
@@ -225,7 +235,6 @@ $(function(){
 		success:function(res){
 			if(res.status=="01"){
 				for(var i=0;i<res.rows.length;i++){
-					$("#queryStuId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
 					$("#stuId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
 				}
 			}else{
@@ -248,7 +257,7 @@ function getTabContent(status){
 	    queryParams : function(params) {//上传服务器的参数
 	    	var temp = {
 	    		billType:$("#queryType").val(),
-	    		stuId:$("#queryStuId").val(),
+	    		stuName:$("#queryStuName").val(),
 	    		claId:$("#queryClaId").val(),
 	    		payTime:$("#queryPayTime").val(),
 	    		status:status,

@@ -13,6 +13,9 @@
 		<if test="type != '' and type != null">
 			and type = #{type}
 		</if> 
+		<if test="userName != '' and userName != null">
+			and user_name like CONCAT('%', #{userName}, '%')
+		</if>
 		order by create_time desc
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
@@ -25,6 +28,9 @@
 		</if> 
 		<if test="type != '' and type != null">
 			and type = #{type}
+		</if>
+		<if test="userName != '' and userName != null">
+			and user_name like CONCAT('%', #{userName}, '%')
 		</if> 
 	</select>
 	<delete id="deleteLogInfoByDay" parameterType="com.meetsun.meetsun.entity.LogInfo">

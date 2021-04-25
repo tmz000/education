@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.KpiNotesDao">
 	<insert id="saveKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
-		insert into kpi_notes(sys_id,serial_num,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,staff_id,dept_sign,ad_sign,add_time,and_time,count_points,create_time,update_time)
-			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{staffId},#{deptSign},#{adSign},#{addTime},#{andTime},#{countPoints},now(),now())
+		insert into kpi_notes(sys_id,serial_num,kpi_type,kpi,points,dept_points,ad_check,reason,dept_id,dept_type_id,staff_id,dept_sign,ad_sign,add_time,and_time,count_points,create_time,update_time)
+			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{deptTypeId},#{staffId},#{deptSign},#{adSign},#{addTime},#{andTime},#{countPoints},now(),now())
 	</insert>
 	<select id="getKpiNotesList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
 		select * from kpi_notes where 1=1

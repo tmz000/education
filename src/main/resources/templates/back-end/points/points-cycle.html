@@ -15,16 +15,7 @@
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="bootstrap-table/bootstrap-table-zh-CN.js"></script>
-<style>
-/* .remark{
-	white-space:nowrap;
-	overflow-y:hidden;
-	overflow-x:scroll;
-}
-::-webkit-scrollbar{
-	display:none;
-} */
-</style>
+<script src="js/tableExport.min.js"></script>
 </head>
 <body>
 <div id="body">
@@ -37,28 +28,45 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-content">
-       		<!-- <button class="btn btn-info" id="saveButton" data-toggle="modal" data-target="#myModal" style="float:right">新增</button> -->
-          	<div id="toolbar">
-          		<div style="float:left;margin-top:5px;">
+       		<div style="width:98.5%;height:30px;">
+            	<div style="width:50%;float:left;">&nbsp;
+            	</div>
+            	<div style="width:50%;float:left;">
+            		<div style="float:right;">
+	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+            		</div>
+            	</div>
+            </div>
+          	<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
+       			<div style="float:left;">
+          			<div style="float:left;margin-top:5px;">
 		     		员工姓名：
-          		</div>
-          		<div style="float:left;">
-		     		<select id="teaId"><option value="" disabled selected hidden>请选择员工</option></select>&nbsp;&nbsp;&nbsp;
-          		</div>
-          		<div style="float:left;">
-		     		<input type="text" class="form-control form_datetime" id="addTime" placeholder="请选择开始日期" autocomplete="off" onFocus="this.blur()">
-          		</div>
-          		<div style="float:left;margin-top:5px;">
-			        &nbsp;-&nbsp;
-          		</div>
-          		<div style="float:left;">
-	     			<input type="text" class="form-control form_datetime" id="andTime" placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
-		        </div>
-		        <div style="float:left;">
-		        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
-		        </div>
-		        <div style="float:left;">
-		        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+          			</div>
+	          		<div style="float:left;">
+			     		<select id="teaId"><option value="" disabled selected hidden>请选择员工</option></select>&nbsp;&nbsp;&nbsp;
+	          		</div>
+	          	</div>
+	          	<div style="float:left;">
+   					<div style="float:left;margin-top:5px;">
+		     		周期日期：
+          			</div>
+	          		<div style="float:left;">
+			     		<input type="text" class="form-control form_datetime" id="addTime" placeholder="请选择开始日期" autocomplete="off" onFocus="this.blur()">
+	          		</div>
+	          		<div style="float:left;margin-top:5px;">
+				        &nbsp;-&nbsp;
+	          		</div>
+	          		<div style="float:left;">
+		     			<input type="text" class="form-control form_datetime" id="andTime" placeholder="请选择结束日期" autocomplete="off" onFocus="this.blur()">
+			        </div>
+			    </div>
+			    <div style="float:left;">
+			        <div style="float:left;">
+			        	&nbsp;&nbsp;&nbsp;<button class="btn btn-info" id="queryTable">查询</button>
+			        </div>
+			        <div style="float:left;">
+			        	&nbsp;<button class="btn btn-danger" id="clearTable">清空</button>
+			        </div>
 		        </div>
             </div>
           	<table id="table" style="white-space:nowrap;overflow: hidden"></table>
@@ -287,6 +295,17 @@ $("#andTime").change(function(){
 		$(this).datetimepicker('setDate',new Date(time[0]+"-"+time[1]+"-"+day)); 
 	}
 })
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0,6],//忽略某一列的索引
+        fileName: 'KPI考核',//下载文件名称
+        onCellHtmlData: function (cell, row, col, data){//处理导出内容,自定义某一行、某一列、某个单元格的内容
+            return data;
+        },
+    });
+}
 </script>
 <script src="getMsUser.js"></script>
 </body>

@@ -12,6 +12,7 @@ public class KpiNotes {
 	private String adCheck;
 	private String reason;
 	private String deptId;
+	private String deptTypeId;
 	private String staffId;
 	private String deptSign;
 	private String adSign;
@@ -24,6 +25,7 @@ public class KpiNotes {
 	
 	private String staffName;
 	private String deptName;
+	private String deptTypeName;
 	private Integer offset;
 	private Integer pageNumber;
 }

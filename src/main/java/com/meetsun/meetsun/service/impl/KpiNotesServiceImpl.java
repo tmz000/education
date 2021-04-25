@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.meetsun.meetsun.dao.EduDeptDao;
+import com.meetsun.meetsun.dao.EduDeptTypeDao;
 import com.meetsun.meetsun.dao.EduStaffDao;
 import com.meetsun.meetsun.dao.KpiNotesDao;
 import com.meetsun.meetsun.entity.EduStaff;
@@ -13,6 +14,7 @@ import com.meetsun.meetsun.entity.KpiNotes;
 import com.meetsun.meetsun.service.KpiNotesService;
 import com.meetsun.meetsun.until.Result;
 import com.meetsun.meetsun.until.Tools;
+import com.meetsun.meetsun.vo.EduDeptTypeVo;
 import com.meetsun.meetsun.vo.EduDeptVo;
 import com.meetsun.meetsun.vo.EduStaffVo;
 import com.meetsun.meetsun.vo.KpiNotesVo;
@@ -26,6 +28,8 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 	private EduStaffDao eduStaffDao;
 	@Autowired
 	private EduDeptDao eduDeptDao;
+	@Autowired
+	private EduDeptTypeDao eduDeptTypeDao;
 	
 	@Override
 	public Result<Object> getKpiNotesList(KpiNotesVo vo) {
@@ -38,6 +42,11 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 				EduDeptVo edvo = new EduDeptVo();
 				edvo.setSysId(kp.getDeptId());
 				kp.setDeptName(eduDeptDao.getEduDeptList(edvo).get(0).getName());
+				if(kp.getDeptTypeId() != null) {
+					EduDeptTypeVo edtvo = new EduDeptTypeVo();
+					edvo.setSysId(kp.getDeptTypeId());
+					kp.setDeptTypeName(eduDeptTypeDao.getEduDeptTypeList(edtvo).get(0).getName());
+				}
 			}
 		}
 		Result result = new Result();
@@ -91,6 +100,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		List<KpiNotes> listc = kpiNotesDao.getKpiNotesList(vo);
 		
 		String deptId = "";
+		String deptTypeId = "";
 		String deptName = "";
 		String staffName = "";
 		String serialNum = Tools.getUUID();
@@ -101,6 +111,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 			evo.setSysId(vo.getStaffId());
 			List<EduStaff> evli = eduStaffDao.getEduStaffList(evo);
 			deptId = evli.get(0).getDeptId();
+			deptTypeId = evli.get(0).getDeptTypeId();
 			staffName = evli.get(0).getName();
 			EduDeptVo edvo = new EduDeptVo();
 			edvo.setSysId(deptId);
@@ -194,6 +205,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 				deleteKpiNotes(kvo);
 			}
 			for(KpiNotes k : list) {
+				k.setDeptTypeId(deptTypeId);
 				kpiNotesDao.saveKpiNotes(k);
 			}
 		}

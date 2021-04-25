@@ -57,7 +57,7 @@
             		</div>
             	</div>
             </div>
-          	<div id="toolbar" style="width:98.5%;border:1px solid #CDCDB4;padding-top:10px;">
+          	<div id="toolbar" style="width:100%;border-top:1px solid #CDCDB4;padding-top:10px;">
           		<div style="float:left;margin-top:5px;">
 		     		姓名：
           		</div>
@@ -162,22 +162,6 @@
 var queryS = 0;
 $(function(){
 	init1(queryS);
-	$.ajax({
-		type:"post",
-		url:"/eduStaff/getEduStaffList?token="+localStorage.getItem("token"),
-		data:JSON.stringify({type:"0"}),
-		contentType:'application/json',
-		success:function(res){
-			if(res.status=="01"){
-				for(var i=0;i<res.rows.length;i++){
-					$("#teaId").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
-					$("#teaId1").append('<option value="'+res.rows[i].sysId+'">'+res.rows[i].name+'</option>')
-				}
-			}else{
-				alert("暂无权限")
-			}
-		}
-	})
 	$.ajax({
 		type:"post",
 		url:"/eduClasses/getEduClassesList?token="+localStorage.getItem("token"),
