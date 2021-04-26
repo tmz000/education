@@ -34,6 +34,11 @@ public class KpiNotesController {
 	public Result<Object> saveKpiNotes(@RequestBody KpiNotes vo,HttpServletRequest request) {
 		return kpiNotesService.saveKpiNotes(vo); 
 	}
+	@Log(operation = "新增" , remark="【KPI考核】批量新增KPI考核" , type = "0")
+	@RequestMapping({"/saveKpiNotesBatch"})
+	public Result<Object> saveKpiNotesBatch(@RequestBody KpiNotesVo vo,HttpServletRequest request) {
+		return kpiNotesService.saveKpiNotesBatch(vo); 
+	}
    
 	//@Log(operation = "修改" , remark="【KPI考核】修改KPI考核" , type = "0")
 	@RequestMapping({"/updateKpiNotes"})

@@ -281,4 +281,14 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		}
 		return Result.success(list);
 	}
+	
+	@Override
+	public Result<Object> saveKpiNotesBatch(KpiNotesVo vo) {
+		List<EduStaff> list = eduStaffDao.getEduStaffList(new EduStaffVo());
+		for(EduStaff es : list) {
+			vo.setStaffId(es.getSysId());
+			this.getKpiByStaffId(vo);
+		}
+		return Result.success("success");
+	}
 }

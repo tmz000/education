@@ -34,6 +34,7 @@
             	<div style="width:50%;float:left;">
             		<div style="float:right;">
 	            		<button class="btn btn-success" onclick="exportData()" class='btn btn-mini btn-info'>导出</button>
+	            		<button class="btn btn-info" onclick="saveKpiNotesBatch()" class='btn btn-mini btn-info'>批量生成</button>
             		</div>
             	</div>
             </div>
@@ -423,6 +424,23 @@ function getDate(){
 		date = "0" + date;
 	}
 	return year+"-"+month+"-"+date;
+}
+function saveKpiNotesBatch(){
+	if(confirm("确定批量生成所有员工"+$("#addTime").val()+"至"+$("#andTime").val()+"的KPI？")){
+		$.ajax({
+			type:"post",
+			url:"/kpiNotes/saveKpiNotesBatch?token="+localStorage.getItem("token"),
+			data:JSON.stringify({addTime:$("#addTime").val(),andTime:$("#andTime").val()}),
+			contentType:'application/json',
+			success:function(res){
+				if(res.status=="01"){
+					alert("批量生成成功；请前往【考核历史】查看！")
+				}else{
+					alert("暂无权限")
+				}
+			}
+		})
+	}
 }
 </script>
 <script src="getMsUser.js"></script>
