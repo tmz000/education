@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meetsun.meetsun.dao.EduStaffDao">
 	<insert id="saveEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
-		insert into edu_staff(sys_id,name,dept_id,come_date,out_date,status,dept_type_id,create_time,update_time)
-			values(#{sysId},#{name},#{deptId},#{comeDate},#{outDate},#{status},#{deptTypeId},now(),now())
+		insert into edu_staff(sys_id,name,dept_id,come_date,out_date,status,dept_type_id,is_lead,create_time,update_time)
+			values(#{sysId},#{name},#{deptId},#{comeDate},#{outDate},#{status},#{deptTypeId},#{isLead},now(),now())
 	</insert>
 	<select id="getEduStaffList" parameterType="com.meetsun.meetsun.entity.EduStaff" resultType="com.meetsun.meetsun.entity.EduStaff">
 		select * from edu_staff where 1=1
@@ -25,6 +25,9 @@
 		<if test="deptTypeId != '' and deptTypeId != null">
 			and locate(#{deptTypeId},dept_type_id)
 		</if> 
+		<if test="isLead != '' and isLead != null">
+			and is_lead = #{isLead}
+		</if> 
 		order by status asc,create_time desc 
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
@@ -44,11 +47,14 @@
 		<if test="comeDate != '' and comeDate != null">
 			and come_date = #{comeDate}
 		</if>
+		<if test="name != '' and name != null">
+			and name like CONCAT('%', #{name}, '%')
+		</if>
 		<if test="deptTypeId != '' and deptTypeId != null">
 			and locate(#{deptTypeId},dept_type_id)
 		</if>
-		<if test="name != '' and name != null">
-			and name like CONCAT('%', #{name}, '%')
+		<if test="isLead != '' and isLead != null">
+			and is_lead = #{isLead}
 		</if>
 	</select>
 	<update id="updateEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">
@@ -59,6 +65,7 @@
 			dept_type_id = #{deptTypeId},
 			come_date = #{comeDate},
 			out_date = #{outDate},
+			is_lead = #{isLead},
 		update_time = now() where sys_id = #{sysId}
 	</update>
 	<delete id="deleteEduStaff" parameterType="com.meetsun.meetsun.entity.EduStaff">

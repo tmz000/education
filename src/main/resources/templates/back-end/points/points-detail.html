@@ -55,7 +55,7 @@ function init(){
 	var locationUrl = location.search;
 	$('#table').bootstrapTable('destroy');
 	$('#table').bootstrapTable({
-	    url: "/kpiNotes/getKpiNotesList?token="+localStorage.getItem("token"),
+	    url: "/kpiNotes/getKpiNotesDetailList?token="+localStorage.getItem("token"),
 	    toolbar:'#toolbar',
 	    method:"post",
 	    queryParams : function(params) {//上传服务器的参数
@@ -96,7 +96,7 @@ function init(){
 			   	        return row.deptPoints;
 	        		}
 	        	}else if(row.deptPoints/1 == 0){
-	        		return row.points;
+	        		return "";
 	        	}
 	   	    }
 	    },{
@@ -115,7 +115,7 @@ function init(){
 			   	        return row.adCheck;
 	        		}
 	        	}else if(row.adCheck/1 == 0){
-	        		return row.points;
+	        		return "";
 	        	}
 	   	    }
 	    },{
@@ -126,61 +126,30 @@ function init(){
 	        formatter:paramsMatter,
 	        cellStyle:formatTableUnit
 	    }],
-/* 	    onClickCell: function (field, value, row, $element) {
+		onClickCell: function (field, value, row, $element) {
             let index = $element.parent().data('index');
             let tdValue = $element.html();
 	    	if(field == "adCheck"){
 	    		if(index != 20 && index != 21){
 		            $element.attr('contenteditable', true);
 		            $element.blur(function () {
-		            	if(index != 22){
-			            	if(/^-?\d+$/.test(tdValue)){
-				                updateData(index, field, tdValue,row.sysId,row.adCheck);
-			            	}else{
-			            		if(row.deptPoints != ""){
-				            		$element.html(row.deptPoints)
-			            		}else{
-				            		$element.html(row.points)
-			            		}
-			            	}
+		            	if(index == 22){
+			    			updateData(index, field, tdValue,row.sysId);
 			    		}
 		            })
 	    		}
 	    	}
-	    	if(field == "deptPoints"){
-	    		if(index != 21 && index != 22 && index != 20){
-		            $element.attr('contenteditable', true);
-		            $element.blur(function () {
-		            	if(/^-?\d+$/.test(tdValue)){
-			                updateData(index, field, tdValue,row.sysId,row.deptPoints);
-		            	}else{
-		            		if(row.deptPoints != ""){
-			            		$element.html(row.deptPoints)
-		            		}else{
-			            		$element.html(row.points)
-		            		}
-		            	}
-		            })
-	    		}
-	    	}
 	    	if(field == "kpi"){
+	    		console.log(row)
 	    		if(index == 22){
 		            $element.attr('contenteditable', true);
 		            $element.blur(function () {
-		                updateData(index, field, tdValue,row.sysId,row.kpi);
-		            })
-	    		}
-	    	}
-	    	if(field == "reason"){
-	    		if(index != 21){
-		            $element.attr('contenteditable', true);
-		            $element.blur(function () {
-		                updateData(index, field, $element.html(),row.sysId,row.reason);
+		                updateData(index, field, tdValue,row.sysId);
 		            })
 	    		}
 	    	}
         },
- */	    onLoadSuccess: function (data) {
+	    onLoadSuccess: function (data) {
 	        //合并单元格
 	        mergeCells($('#table'), "kpiType", "kpiType", );
 	        mergeColspan();//列合并
@@ -257,6 +226,26 @@ function exportData(){
     });
 }
 function updateData(index, field, tdValue,sysId,oldValue){
+	var data = {sysId:sysId};
+	if(field == "kpi"){
+		data.kpi = tdValue;
+	}else if(field == "deptPoints"){
+		data.deptPoints = tdValue;
+	}else if(field == "reason"){
+		data.reason = tdValue;
+	}else{
+		data.adCheck = tdValue;
+	}
+	$.ajax({
+		type:"post",
+		url:"/kpiNotes/updateKpiNotes?token="+localStorage.getItem("token"),
+		data:JSON.stringify(data),
+		contentType:'application/json',
+		success:function(res){
+			if(res.status=="01"){
+			}
+		}
+	})
 }
 
 $("#addTime").change(function(){

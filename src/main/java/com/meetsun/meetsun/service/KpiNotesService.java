@@ -6,6 +6,7 @@ import com.meetsun.meetsun.vo.KpiNotesVo;
 
 public interface KpiNotesService {
 	Result<Object> getKpiNotesList(KpiNotesVo vo);
+	Result<Object> getKpiNotesDetailList(KpiNotesVo vo);
 	Result<Object> saveKpiNotes(KpiNotes vo);
 	Result<Object> updateKpiNotes(KpiNotesVo vo);
 	Result<Object> deleteKpiNotes(KpiNotesVo vo);

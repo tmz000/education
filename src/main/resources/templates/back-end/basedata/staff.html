@@ -99,6 +99,13 @@
      	<div class="rightCss">
      		<input type="text" class="form-control form_datetime" id="comeDate" placeholder="请选择日期" autocomplete="off" onFocus="this.blur()">
      	</div>
+     	<div class="leftCss"><span style="color:red">*</span>是否部门领导：</div>
+     	<div class="rightCss">
+     		<select id="isLead">
+     			<option value="0">是</option>
+     			<option value="1">否</option>
+     		</select>
+     	</div>
      	<div class="leftCss"><span style="color:red">*</span>目前状态：</div>
      	<div class="rightCss">
      		<select id="status">
@@ -240,6 +247,17 @@ function init(queryS){
 	        align:'center',
 	        title: '部门职务'
 	    },{
+	        field: 'isLead',
+	        align:'center',
+	        title: '是否部门领导',
+	        formatter: function (value, row, index) {
+	   	        if(row.isLead == "0"){
+	   	     		return '<span style="color:#FF0000">是</span>';
+	        	}else{
+	        		return '<span style="color:#00ff00">否</span>';
+	        	}
+	   	    }	
+	    },{
 	        field: 'status',
 	        align:'center',
 	        title: '目前状态',
@@ -271,6 +289,7 @@ function init(queryS){
 	   				$("#comeDate").val(row.comeDate);
 	   				$("#status").val(row.status);
 	   				$("#outDate").val(row.outDate);
+	   				$("#isLead").val(row.isLead);
 	   				$("#sysId").val(row.sysId);
 	   				if(row.deptTypeId == "" || row.deptTypeId == null){
 		   				getDeptType(row.deptId)
@@ -321,6 +340,7 @@ function submit(){
 			"deptTypeId":$("#deptTypeId").val(),
 			"comeDate":$("#comeDate").val(),
 			"status":$("#status").val(),
+			"isLead":$("#isLead").val(),
 			"sysId":$("#sysId").val()
 		})
 		if(dialog==0){
@@ -368,6 +388,7 @@ $("#saveButton").click(function(){
 	$("#deptTypeId").val("");
 	$("#status").val("0");
 	$("#outDate").val("");
+	$("#isLead").val("1");
 	$("#myModalLabel").html("新增");
 })
 

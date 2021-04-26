@@ -24,13 +24,18 @@ public class KpiNotesController {
 		return kpiNotesService.getKpiNotesList(vo); 
 	}
 	
+	@RequestMapping({"/getKpiNotesDetailList"})
+	public Result<Object> getKpiNotesDetailList(@RequestBody KpiNotesVo vo,HttpServletRequest request) { 
+		return kpiNotesService.getKpiNotesDetailList(vo); 
+	}
+	
 	@Log(operation = "新增" , remark="【KPI考核】新增KPI考核" , type = "0")
 	@RequestMapping({"/saveKpiNotes"})
 	public Result<Object> saveKpiNotes(@RequestBody KpiNotes vo,HttpServletRequest request) {
 		return kpiNotesService.saveKpiNotes(vo); 
 	}
    
-	@Log(operation = "修改" , remark="【KPI考核】修改KPI考核" , type = "0")
+	//@Log(operation = "修改" , remark="【KPI考核】修改KPI考核" , type = "0")
 	@RequestMapping({"/updateKpiNotes"})
 	public Result<Object> updateKpiNotes(@RequestBody KpiNotesVo vo) { 
 		return kpiNotesService.updateKpiNotes(vo); 

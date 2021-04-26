@@ -6,7 +6,7 @@
 			values(#{sysId},#{serialNum},#{kpiType},#{kpi},#{points},#{deptPoints},#{adCheck},#{reason},#{deptId},#{deptTypeId},#{staffId},#{deptSign},#{adSign},#{addTime},#{andTime},#{countPoints},now(),now())
 	</insert>
 	<select id="getKpiNotesList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
-		select * from kpi_notes where 1=1
+		select * from (select * from kpi_notes where 1=1
 		<if test="sysId != '' and sysId != null">
 			and sys_id = #{sysId}
 		</if> 
@@ -29,6 +29,7 @@
 		<if test="offset != null">
 			limit #{offset},#{pageNumber}
 		</if>
+		) t order by t.dept_points+0 desc
 	</select>
 	<select id="getKpiNotesListTotal" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="java.lang.Integer">
 		select count(*) from kpi_notes where 1=1
@@ -67,6 +68,32 @@
 			AND p.add_time BETWEEN #{addTime} 
 			AND #{andTime}) t group by staff_id,points_type_id,dept_id,staff_name ) t where t.staff_id = #{staffId}) tt on tt.points_type_id=pt.sys_id and pt.type in ('德','勤','能','绩') order by pt.create_time asc 
 	</select>
+	<!-- 获取某个人的kpi信息 -->
+	<select id="getKpiNotesDetailList" parameterType="com.meetsun.meetsun.entity.KpiNotes" resultType="com.meetsun.meetsun.entity.KpiNotes">
+		select * from kpi_notes where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<if test="serialNum != '' and serialNum != null">
+			and serial_num = #{serialNum}
+		</if> 
+		<if test="staffId != '' and staffId != null">
+			and staff_id = #{staffId}
+		</if> 
+		<if test="addTime != '' and addTime != null">
+			and add_time = #{addTime}
+		</if> 
+		<if test="andTime != '' and andTime != null">
+			and and_time = #{andTime}
+		</if> 
+		<if test="kpi != '' and kpi != null">
+			and kpi = #{kpi}
+		</if> 
+		order by field(kpi_type,'德','勤','能','绩','部门','部门签字'),points+0 asc,dept_points desc
+		<if test="offset != null">
+			limit #{offset},#{pageNumber}
+		</if>
+	</select>
 	
 	<update id="updateKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
 		update kpi_notes set 
@@ -82,7 +109,16 @@
 		<if test="adCheck != '' and adCheck != null">
 			ad_check = #{adCheck},
 		</if>
-		update_time = now() where sys_id = #{sysId}
+		update_time = now() where 1=1
+		<if test="sysId != '' and sysId != null">
+			and sys_id = #{sysId}
+		</if> 
+		<!-- <if test="serialNum != '' and serialNum != null">
+			and serial_num = #{serialNum}
+		</if> 
+		<if test="kpi != '' and kpi != null">
+			and kpi = #{kpi}
+		</if> -->
 	</update>
 	<delete id="deleteKpiNotes" parameterType="com.meetsun.meetsun.entity.KpiNotes">
 		delete from kpi_notes where serial_num = #{serialNum} and staff_id = #{staffId}

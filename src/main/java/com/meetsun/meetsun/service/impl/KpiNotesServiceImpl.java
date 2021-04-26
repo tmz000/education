@@ -1,5 +1,6 @@
 package com.meetsun.meetsun.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.meetsun.meetsun.dao.EduDeptDao;
 import com.meetsun.meetsun.dao.EduDeptTypeDao;
 import com.meetsun.meetsun.dao.EduStaffDao;
 import com.meetsun.meetsun.dao.KpiNotesDao;
+import com.meetsun.meetsun.entity.EduDept;
 import com.meetsun.meetsun.entity.EduStaff;
 import com.meetsun.meetsun.entity.KpiNotes;
 import com.meetsun.meetsun.service.KpiNotesService;
@@ -56,6 +58,27 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		result.setTotal(total);
 		return result;
 	}
+	//kpi详情
+	@Override
+	public Result<Object> getKpiNotesDetailList(KpiNotesVo vo) {
+		List<KpiNotes> list = kpiNotesDao.getKpiNotesDetailList(vo);
+		for(KpiNotes kp : list) {
+			if(kp.getStaffId() != null && kp.getStaffId() != "") {
+				EduStaffVo evo = new EduStaffVo();
+				evo.setSysId(kp.getStaffId());
+				kp.setStaffName(eduStaffDao.getEduStaffList(evo).get(0).getName());
+				EduDeptVo edvo = new EduDeptVo();
+				edvo.setSysId(kp.getDeptId());
+				kp.setDeptName(eduDeptDao.getEduDeptList(edvo).get(0).getName());
+				if(kp.getDeptTypeId() != null) {
+					EduDeptTypeVo edtvo = new EduDeptTypeVo();
+					edvo.setSysId(kp.getDeptTypeId());
+					kp.setDeptTypeName(eduDeptTypeDao.getEduDeptTypeList(edtvo).get(0).getName());
+				}
+			}
+		}
+		return Result.success(list);
+	}
 
 	@Override
 	public Result<Object> saveKpiNotes(KpiNotes vo) {
@@ -70,6 +93,26 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 	@Override
 	public Result<Object> updateKpiNotes(KpiNotesVo vo) {
 		int flag = kpiNotesDao.updateKpiNotes(vo);
+//		List<KpiNotes> list = kpiNotesDao.getKpiNotesDetailList(vo);
+//		KpiNotes kp = new KpiNotes();
+//		KpiNotesVo vo1 = new KpiNotesVo();
+//		for(KpiNotes k : list) {
+//			vo1.setKpi("合计");
+//			vo1.setSerialNum(k.getSerialNum());
+//			kp = kpiNotesDao.getKpiNotesDetailList(vo1).get(0);
+//		}
+//		if(kp != null) {
+//			KpiNotesVo vo2 = new KpiNotesVo();
+//			vo2.setKpi("合计");
+//			vo2.setSerialNum(kp.getSerialNum());
+//			if(vo.getDeptPoints() != null && vo.getDeptPoints() != "") {
+//				vo2.setDeptPoints(String.valueOf(Integer.valueOf(kp.getDeptPoints()) + Integer.valueOf(vo.getDeptPoints())));
+//			}
+//			if(vo.getAdCheck() != null && vo.getAdCheck() != "") {
+//				vo2.setAdCheck(String.valueOf(Integer.valueOf(kp.getAdCheck()) + Integer.valueOf(vo.getAdCheck())));
+//			}
+//			kpiNotesDao.updateKpiNotes(vo2);
+//		}
      	if (flag > 0) {
      		return Result.success("success");
      	}
@@ -84,7 +127,7 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		}
 		return Result.error("error");
 	}
-
+	//kpi生成
 	@Override
 	public Result<Object> getKpiByStaffId(KpiNotesVo vo) {
 		if(vo.getAddTime() == "" || vo.getAddTime() == null) {
@@ -179,8 +222,27 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		kp1.setAdCheck("考核时间");
 		kp1.setReason(vo.getAddTime()+"&nbsp;&nbsp;至&nbsp;&nbsp;"+vo.getAndTime());
 		list.add(kp1);
-		
+		//获取该员工部门领导名字
+		EduStaffVo evo = new EduStaffVo();
+		evo.setDeptId(deptId);
+		evo.setIsLead("0");
+		List<EduStaff> evli = eduStaffDao.getEduStaffList(evo);
 		KpiNotes kp2 = new KpiNotes();
+		//获取行政部门领导名字
+		String deptId2 = null;
+		EduDeptVo edvo = new EduDeptVo();
+		edvo.setName("行政部");
+		List<EduDept> listEdp = eduDeptDao.getEduDeptList(edvo);
+		if(listEdp != null && listEdp.size() > 0) {
+			deptId2 = listEdp.get(0).getSysId();
+		}
+		List<EduStaff> evli2 = new ArrayList<EduStaff>();
+		if(deptId2 != null) {
+			EduStaffVo evo2 = new EduStaffVo();
+			evo2.setDeptId(deptId2);
+			evo2.setIsLead("0");
+			evli2 = eduStaffDao.getEduStaffList(evo2);
+		}
 		kp2.setDeptId(deptId);
 		kp2.setDeptName(deptName);
 		kp2.setAddTime(vo.getAddTime());
@@ -190,10 +252,18 @@ public class KpiNotesServiceImpl implements KpiNotesService{
 		kp2.setSerialNum(serialNum);
 		kp2.setSysId(Tools.getUUID());
 		kp2.setKpiType("部门签字");
-		kp2.setKpi("");
+		if(evli != null && evli.size() > 0) {
+			kp2.setKpi(evli.get(0).getName());
+		}else {
+			kp2.setKpi("");
+		}
 		kp2.setPoints("");
 		kp2.setDeptPoints("行政签字");
-		kp2.setAdCheck("");
+		if(evli2 != null && evli2.size() > 0) {
+			kp2.setAdCheck(evli2.get(0).getName());
+		}else {
+			kp2.setAdCheck("");
+		}
 		kp2.setReason("");
 		list.add(kp2);
 		

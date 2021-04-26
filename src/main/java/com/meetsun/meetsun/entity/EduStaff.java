@@ -11,6 +11,7 @@ public class EduStaff {
 	private String status;
 	private String comeDate;
 	private String outDate;
+	private String isLead;
 	private String createTime;
 	private String updateTime;
 	

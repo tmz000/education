@@ -16,6 +16,9 @@ public interface KpiNotesDao {
 	 */
 	List<KpiNotes> getKpiNotesList(KpiNotesVo vo);
 	int getKpiNotesListTotal(KpiNotesVo vo);
+	
+	List<KpiNotes> getKpiNotesDetailList(KpiNotesVo vo);
+	
 	/**
 	 * 添加KPI考核信息
 	 * @param paramMsUserVo
